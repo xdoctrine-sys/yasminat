@@ -8,7 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "prebuild": "XDG_CONFIG_HOME=$PWD/.xdg-config XDG_CACHE_HOME=$PWD/.xdg-cache XDG_DATA_HOME=$PWD/.xdg-data bun --filter=@acme/api run codegen",
-    "start": "cd packages/api/.medusa/server && npx medusa start --host 0.0.0.0 --port ${PORT:-9000}"
+    "start": "sh -c 'set -e; cd /app/packages/api && npx medusa db:migrate --no-interactive; cd /app/packages/api/.medusa/server && npx medusa start --host 0.0.0.0 --port ${PORT:-9000}'"
   },
   "dependencies": {
     "react": "18.3.1",
