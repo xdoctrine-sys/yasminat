@@ -13,6 +13,16 @@ else
   npx --no medusa db:migrate --execute-safe-links
 fi
 echo "[entrypoint] Migrations OK"
+if [ -n "${ADMIN_EMAIL:-}" ] && [ -n "${ADMIN_PASSWORD:-}" ]; then
+  echo "[entrypoint] Create/update admin user: ${ADMIN_EMAIL}"
+  cd /app/packages/api/.medusa/server
+  if command -v bun >/dev/null 2>&1; then
+    bunx medusa user -e "${ADMIN_EMAIL}" -p "${ADMIN_PASSWORD}" || true
+  else
+    npx --no medusa user -e "${ADMIN_EMAIL}" -p "${ADMIN_PASSWORD}" || true
+  fi
+  echo "[entrypoint] Admin user step done (exit=$?)"
+fi
 cd /app/packages/api/.medusa/server
 echo "[entrypoint] (2/2) Start Medusa server host=0.0.0.0 port=${PORT:-9000} ..."
 if command -v bun >/dev/null 2>&1; then
