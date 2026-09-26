@@ -1,0 +1,24 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK",
+    "rootDirectory": "./",
+    "watchPatterns": [
+      "apps/storefront/**",
+      "packages/api/.mercur/**",
+      "packages/api/src/**",
+      "!apps/storefront/node_modules/**",
+      "!apps/storefront/.next/**",
+      "!**/node_modules/**",
+      "!**/.git/**"
+    ],
+    "buildCommand": "bun install --no-save && bun --filter=@mercurjs/storefront run build && ( cd apps/storefront && [ -d .next/standalone/apps/storefront ] && { [ -d .next/standalone/apps/storefront/public ] || cp -a public .next/standalone/apps/storefront/public; } && { mkdir -p .next/standalone/apps/storefront/.next && [ -d .next/standalone/apps/storefront/.next/static ] || cp -a .next/static .next/standalone/apps/storefront/.next/static; }; true )",
+  },
+  "deploy": {
+    "startCommand": "cd apps/storefront/.next/standalone && PORT=${PORT} HOSTNAME=0.0.0.0 node apps/storefront/server.js",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 180,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  }
+}

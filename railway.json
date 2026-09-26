@@ -1,0 +1,29 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK",
+    "rootDirectory": "./",
+    "watchPatterns": [
+      "packages/api/**",
+      "apps/admin/**",
+      "apps/vendor/**",
+      "packages/**",
+      "!apps/storefront/**",
+      "!**/node_modules/**",
+      "!**/.git/**"
+    ],
+    "buildCommand": "bun install --no-save && bun run build"
+  },
+  "deploy": {
+    "preDeployCommand": [
+      "cd packages/api && npx medusa db:migrate --no-interactive"
+    ],
+    "startCommand": "cd packages/api/.medusa/server && npx medusa start --host 0.0.0.0 --port ${PORT}",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5,
+    "overlapSeconds": 60,
+    "drainingSeconds": 30
+  }
+}

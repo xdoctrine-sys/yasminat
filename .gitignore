@@ -1,0 +1,16 @@
+# Build
+**/node_modules
+**/.turbo
+**/.next/cache
+**/dist
+**/.medusa
+
+# Secrets
+.env
+.env.local
+.env.*
+!.env.template
+.secrets.*
+
+# Logs
+*.log
