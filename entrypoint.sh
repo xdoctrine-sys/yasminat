@@ -3,14 +3,14 @@ set -Eeuo pipefail
 echo "[entrypoint] Starting backend entrypoint.sh at $(date)"
 echo "[entrypoint] PWD=$(pwd)  PORT=${PORT:-9000}  DATABASE_URL=${DATABASE_URL:+SET}  REDIS_URL=${REDIS_URL:+SET}  JWT_SECRET=${JWT_SECRET:+SET}  COOKIE_SECRET=${COOKIE_SECRET:+SET}"
 cd /app/packages/api
-echo "[entrypoint] (1/2) Run Medusa DB migrate --no-interactive ..."
+echo "[entrypoint] (1/2) Run Medusa DB migrate --execute-safe-links ..."
 export PATH="/app/node_modules/.bin:/app/packages/api/node_modules/.bin:$PATH"
 if command -v bun >/dev/null 2>&1; then
   echo "[entrypoint] bun available → using bunx medusa"
-  bunx medusa db:migrate --no-interactive
+  bunx medusa db:migrate --execute-safe-links
 else
   echo "[entrypoint] bun NOT available → using npx medusa"
-  npx --no medusa db:migrate --no-interactive
+  npx --no medusa db:migrate --execute-safe-links
 fi
 echo "[entrypoint] Migrations OK"
 cd /app/packages/api/.medusa/server
