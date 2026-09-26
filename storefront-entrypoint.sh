@@ -3,47 +3,64 @@ set -Eeuo pipefail
 echo "[storefront-entrypoint] Starting storefront at $(date)"
 echo "[storefront-entrypoint] PWD=$(pwd)  PORT=${PORT:-3000}"
 
-cd /app/apps/storefront
-
-STANDALONE_DIR="/app/apps/storefront/.next/standalone"
+APP_DIR="/app/apps/storefront"
+STANDALONE_DIR="${APP_DIR}/.next/standalone"
 STANDALONE_NESTED="${STANDALONE_DIR}/apps/storefront"
 
-if [ -f "${STANDALONE_DIR}/server.js" ]; then
-  echo "[storefront-entrypoint] Detected FLAT standalone (server.js at root of standalone/)"
-  if [ -d "/app/apps/storefront/public" ] && [ ! -d "${STANDALONE_DIR}/public" ]; then
-    echo "[storefront-entrypoint] Copying public/ into standalone/public..."
-    cp -a "/app/apps/storefront/public" "${STANDALONE_DIR}/public"
-  fi
-  if [ -d "/app/apps/storefront/.next/static" ] && [ ! -d "${STANDALONE_DIR}/.next/static" ]; then
-    echo "[storefront-entrypoint] Copying .next/static/ into standalone/.next/static..."
-    mkdir -p "${STANDALONE_DIR}/.next"
-    cp -a "/app/apps/storefront/.next/static" "${STANDALONE_DIR}/.next/static"
-  fi
-  cd "${STANDALONE_DIR}"
-  export HOSTNAME="0.0.0.0"
-  echo "[storefront-entrypoint] Starting Next standalone (FLAT) HOSTNAME=${HOSTNAME} PORT=${PORT:-3000}"
-  exec node server.js
-fi
-
-if [ -f "${STANDALONE_NESTED}/server.js" ]; then
-  echo "[storefront-entrypoint] Detected NESTED standalone (apps/storefront/server.js inside standalone/)"
-  if [ -d "/app/apps/storefront/public" ] && [ ! -d "${STANDALONE_NESTED}/public" ]; then
-    echo "[storefront-entrypoint] Copying public/ into nested standalone..."
-    cp -a "/app/apps/storefront/public" "${STANDALONE_NESTED}/public"
-  fi
-  if [ -d "/app/apps/storefront/.next/static" ] && [ ! -d "${STANDALONE_NESTED}/.next/static" ]; then
-    echo "[storefront-entrypoint] Copying .next/static/ into nested standalone .next/static..."
-    mkdir -p "${STANDALONE_NESTED}/.next"
-    cp -a "/app/apps/storefront/.next/static" "${STANDALONE_NESTED}/.next/static"
-  fi
-  cd "${STANDALONE_DIR}"
-  export HOSTNAME="0.0.0.0"
-  echo "[storefront-entrypoint] Starting Next standalone (NESTED) HOSTNAME=${HOSTNAME} PORT=${PORT:-3000}"
-  exec node "apps/storefront/server.js"
-fi
-
-echo "[storefront-entrypoint] ❌ No standalone found at either path. Listing:"
-ls -la "${STANDALONE_DIR}" 2>&1 | head -20 || true
-echo "[storefront-entrypoint] Fallback: direct start in /app/apps/storefront via next start"
 export HOSTNAME="0.0.0.0"
-exec npx --no next start --port "${PORT:-3000}" --hostname 0.0.0.0
+
+try_next_start_direct() {
+  echo "[storefront-entrypoint] Try #1: direct next start from apps/storefront"
+  cd "${APP_DIR}"
+  export PATH="/app/node_modules/.bin:/app/apps/storefront/node_modules/.bin:$PATH"
+  if command -v bun >/dev/null 2>&1; then
+    echo "[storefront-entrypoint] using bunx next start HOSTNAME=${HOSTNAME} PORT=${PORT:-3000}"
+    exec bunx next start --hostname 0.0.0.0 --port "${PORT:-3000}"
+  fi
+  if command -v npx >/dev/null 2>&1; then
+    echo "[storefront-entrypoint] using npx next start HOSTNAME=${HOSTNAME} PORT=${PORT:-3000}"
+    exec npx --no next start --hostname 0.0.0.0 --port "${PORT:-3000}"
+  fi
+}
+
+try_standalone_flat() {
+  if [ ! -f "${STANDALONE_DIR}/server.js" ]; then return 1; fi
+  echo "[storefront-entrypoint] Try #2: standalone FLAT at ${STANDALONE_DIR}/server.js"
+  if [ -d "${APP_DIR}/public" ] && [ ! -d "${STANDALONE_DIR}/public" ]; then
+    echo "[storefront-entrypoint] cp public → ${STANDALONE_DIR}/public"
+    cp -a "${APP_DIR}/public" "${STANDALONE_DIR}/public"
+  fi
+  if [ -d "${APP_DIR}/.next/static" ] && [ ! -d "${STANDALONE_DIR}/.next/static" ]; then
+    mkdir -p "${STANDALONE_DIR}/.next"
+    echo "[storefront-entrypoint] cp .next/static → ${STANDALONE_DIR}/.next/static"
+    cp -a "${APP_DIR}/.next/static" "${STANDALONE_DIR}/.next/static"
+  fi
+  cd "${STANDALONE_DIR}"
+  echo "[storefront-entrypoint] node server.js PORT=${PORT:-3000}"
+  exec node server.js
+}
+
+try_standalone_nested() {
+  if [ ! -f "${STANDALONE_NESTED}/server.js" ]; then return 1; fi
+  echo "[storefront-entrypoint] Try #3: standalone NESTED ${STANDALONE_NESTED}/server.js"
+  if [ -d "${APP_DIR}/public" ] && [ ! -d "${STANDALONE_NESTED}/public" ]; then
+    echo "[storefront-entrypoint] cp public → nested public"
+    cp -a "${APP_DIR}/public" "${STANDALONE_NESTED}/public"
+  fi
+  if [ -d "${APP_DIR}/.next/static" ] && [ ! -d "${STANDALONE_NESTED}/.next/static" ]; then
+    mkdir -p "${STANDALONE_NESTED}/.next"
+    echo "[storefront-entrypoint] cp .next/static → nested .next/static"
+    cp -a "${APP_DIR}/.next/static" "${STANDALONE_NESTED}/.next/static"
+  fi
+  cd "${STANDALONE_DIR}"
+  echo "[storefront-entrypoint] node apps/storefront/server.js PORT=${PORT:-3000}"
+  exec node "apps/storefront/server.js"
+}
+
+# Run with fallback order: direct first, then standalone variants
+try_next_start_direct || true
+try_standalone_flat || true
+try_standalone_nested || true
+
+echo "[storefront-entrypoint] FATAL: all 3 start methods failed"
+exit 1
