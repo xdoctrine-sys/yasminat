@@ -4,8 +4,19 @@ echo "[entrypoint] Starting backend entrypoint.sh at $(date)"
 echo "[entrypoint] PWD=$(pwd)  PORT=${PORT:-9000}  DATABASE_URL=${DATABASE_URL:+SET}  REDIS_URL=${REDIS_URL:+SET}  JWT_SECRET=${JWT_SECRET:+SET}  COOKIE_SECRET=${COOKIE_SECRET:+SET}"
 cd /app/packages/api
 echo "[entrypoint] (1/2) Run Medusa DB migrate --no-interactive ..."
-npx medusa db:migrate --no-interactive
-echo "[entrypoint] Migrations OK (exit $?)"
+export PATH="/app/node_modules/.bin:/app/packages/api/node_modules/.bin:$PATH"
+if command -v bun >/dev/null 2>&1; then
+  echo "[entrypoint] bun available → using bunx medusa"
+  bunx medusa db:migrate --no-interactive
+else
+  echo "[entrypoint] bun NOT available → using npx medusa"
+  npx --no medusa db:migrate --no-interactive
+fi
+echo "[entrypoint] Migrations OK"
 cd /app/packages/api/.medusa/server
 echo "[entrypoint] (2/2) Start Medusa server host=0.0.0.0 port=${PORT:-9000} ..."
-exec npx medusa start --host 0.0.0.0 --port "${PORT:-9000}"
+if command -v bun >/dev/null 2>&1; then
+  exec bunx medusa start --host 0.0.0.0 --port "${PORT:-9000}"
+else
+  exec npx --no medusa start --host 0.0.0.0 --port "${PORT:-9000}"
+fi
