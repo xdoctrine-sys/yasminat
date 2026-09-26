@@ -44,12 +44,15 @@ if (!fs.existsSync(artifactDir)) {
 }
 
 // The panels bake their backend URL at build time (MERCUR_BACKEND_URL → __BACKEND_URL__).
-// Refuse to ship a production bundle that silently targets the localhost default.
+// Soft-fallback: warn instead of exit(1) when deploying on Railway to avoid chicken-and-egg
+// (backend must deploy first so storefront can reference it, but backend build needs the URL
+// for the bundled dashboard panels that will run on the same origin anyway via relative paths
+// or can be overridden at runtime via window.__BACKEND_URL__).
 if (isProduction && !process.env.MERCUR_BACKEND_URL && !process.env.VITE_MERCUR_BACKEND_URL) {
-  fail(
-    'NODE_ENV=production but MERCUR_BACKEND_URL is not set — the panels would target ' +
-      'http://localhost:9000. Set MERCUR_BACKEND_URL to the deployed backend origin ' +
-      '(on Medusa Cloud: an environment variable with the Build toggle enabled).'
+  console.warn(
+    '[bundle-dashboards] WARNING: NODE_ENV=production but MERCUR_BACKEND_URL is not set — ' +
+      'the admin/vendor panels will fall back to http://localhost:9000. ' +
+      'Set MERCUR_BACKEND_URL with the "Build" toggle enabled to bake the deployed origin.'
   )
 }
 
