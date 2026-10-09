@@ -57,11 +57,10 @@ if (allowLocalFileBackend) {
   );
 }
 
-// TODO(infra): remplacer le wildcard "**" par le hostname exact du bucket S3/R2 de production
-// (ex: yasminat-production-cdn.cloudflare.net) dès que le stockage durable est configuré.
 remotePatterns.push({
   protocol: 'https',
-  hostname: '**'
+  hostname: 'backend-production-43e77.up.railway.app',
+  pathname: '/static/**'
 });
 
 const nextConfig: NextConfig = {
