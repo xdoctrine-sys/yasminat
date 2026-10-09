@@ -1,0 +1,22 @@
+diff --git a/dist/trace-mapping.umd.js b/dist/trace-mapping.umd.js
+index 8b755bd195e3f3b21a2a2451de226a2838fa2fb7..3e39be2ea5b410f8d0574504cfbe4f164d0d5050 100644
+--- a/dist/trace-mapping.umd.js
++++ b/dist/trace-mapping.umd.js
+@@ -397,6 +397,8 @@
+         };
+         exports.originalPositionFor = (map, { line, column, bias }) => {
+             line--;
++            if (line < 0 || column == null) return INVALID_ORIGINAL_MAPPING;
++            if (column < 0) column = 0;
+             if (line < 0)
+                 throw new Error(LINE_GTR_ZERO);
+             if (column < 0)
+@@ -421,6 +423,8 @@
+         };
+         exports.generatedPositionFor = (map, { source, line, column, bias }) => {
+             line--;
++            if (line < 0 || source == null) return { line: null, column: null, lastColumn: null };
++            if (column < 0) column = 0;
+             if (line < 0)
+                 throw new Error(LINE_GTR_ZERO);
+             if (column < 0)
