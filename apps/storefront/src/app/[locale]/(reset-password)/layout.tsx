@@ -18,7 +18,7 @@ export default async function ResetPasswordLayout({
 
   return (
     <>
-      <Header locale={locale} />
+      <Header />
       {children}
       <Footer />
     </>

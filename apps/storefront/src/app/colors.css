@@ -92,12 +92,15 @@
     --bg-component-secondary-hover: var(--neutral-50);
     --bg-component-secondary-pressed: var(--neutral-100);
 
-    --bg-action-primary: var(--brand-900);
-    --bg-action-primary-hover: var(--brand-800);
-    --bg-action-primary-pressed: var(--brand-700);
-    --bg-action-secondary: rgba(var(--neutral-1000), 0.05);
-    --bg-action-secondary-hover: rgba(var(--neutral-1000), 0.1);
-    --bg-action-secondary-pressed: rgba(var(--neutral-1000), 0.2);
+    --bg-action-primary: 100, 104, 0; /* Olive Yasminat (#646800) */
+    --bg-action-primary-hover: 94, 98, 0; /* olive ~6% darker */
+    --bg-action-primary-pressed: 84, 88, 0;
+    --bg-surface-pill: 242, 244, 246; /* off-white rounded pills */
+    --bg-surface-pill-hover: 235, 238, 241;
+    --border-surface-pill: 224, 226, 230;
+    --bg-action-secondary: rgba(var(--bg-surface-pill), 1);
+    --bg-action-secondary-hover: rgba(var(--bg-surface-pill-hover), 1);
+    --bg-action-secondary-pressed: 227, 231, 235;
     --bg-action-tertiary: rgba(var(--neutral-1000), 0.05);
     --bg-action-tertiary-hover: rgba(var(--neutral-1000), 0.1);
     --bg-action-tertiary-pressed: rgba(var(--neutral-1000), 0.2);

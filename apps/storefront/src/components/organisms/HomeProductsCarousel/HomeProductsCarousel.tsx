@@ -12,18 +12,22 @@ export const HomeProductsCarousel = async ({
   sellerProducts: Product[]
   home: boolean
 }) => {
-  const {
-    response: { products },
-  } = await listProducts({
-    countryCode: locale,
-    queryParams: {
-      limit: home ? 4 : undefined,
-      order: "created_at",
-      handle: home
-        ? undefined
-        : sellerProducts.map((product) => product.handle),
-    },
-  })
+  let products: Product[] = []
+  try {
+    const res = await listProducts({
+      countryCode: locale,
+      queryParams: {
+        limit: home ? 4 : undefined,
+        order: "created_at",
+        handle: home
+          ? undefined
+          : sellerProducts.map((product) => product.handle),
+      },
+    })
+    products = res.response.products as Product[]
+  } catch {
+    products = []
+  }
 
   if (!products.length && !sellerProducts.length) return null
 
