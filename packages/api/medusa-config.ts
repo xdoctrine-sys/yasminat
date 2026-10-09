@@ -33,6 +33,9 @@ module.exports = withMercur({
   },
   modules: [
     {
+      resolve: path.join(__dirname, `src/modules/hero-banners`),
+    },
+    {
       resolve: '@mercurjs/core/modules/admin-ui',
       options: {
         appDir: dashboardAppDir('admin'),
