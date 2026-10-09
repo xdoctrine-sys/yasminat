@@ -4,6 +4,10 @@
 **/.next/cache
 **/dist
 **/.medusa
+**/.mercur
+
+# File-local module uploads (ephemeral local dev; replaced by S3/R2 in production
+packages/api/static/
 
 # Secrets
 .env
