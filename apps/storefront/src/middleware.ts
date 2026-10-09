@@ -28,53 +28,93 @@ const makeAuthRedirect = (
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
-  regionMapUpdated: Date.now()
+  regionMapUpdated: 0
 };
 
+const fallbackRegion: HttpTypes.StoreRegion = {
+  id: 'fallback',
+  name: 'Default',
+  currency_code: 'QAR',
+  countries: [{ iso_2: (process.env.NEXT_PUBLIC_DEFAULT_REGION || 'qa').toLowerCase() } as any],
+} as any;
+
+let lastSuccessfulRegionMap: Map<string, HttpTypes.StoreRegion> | null = null;
+let lastSuccessfulRegionMapAt = 0;
+
 async function getRegionMap(cacheId: string) {
-  const { regionMap, regionMapUpdated } = regionMapCache;
+  const { regionMap } = regionMapCache;
 
   if (!BACKEND_URL) {
-    throw new Error(
-      'Middleware.ts: Error fetching regions. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL.'
-    );
+    const fallback = new Map<string, HttpTypes.StoreRegion>();
+    fallbackRegion.countries?.forEach(c => fallback.set(c.iso_2 ?? '', fallbackRegion));
+    if (!lastSuccessfulRegionMap) { lastSuccessfulRegionMap = fallback; lastSuccessfulRegionMapAt = Date.now(); }
+    return fallback;
   }
 
-  if (!regionMap.keys().next().value || regionMapUpdated < Date.now() - 3600 * 1000) {
-    // We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
-    const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
+  const hasPopulatedMap = regionMap.size > 0;
+  const isStale = regionMapCache.regionMapUpdated < Date.now() - 3600 * 1000;
+
+  const shouldFetchFresh = !hasPopulatedMap || isStale;
+
+  if (!shouldFetchFresh) {
+    lastSuccessfulRegionMap = new Map(regionMap);
+    lastSuccessfulRegionMapAt = Date.now();
+    return regionMap;
+  }
+
+  let fetchedRegions: HttpTypes.StoreRegion[] | null = null;
+  let fetchFailed = false;
+  let fetchError: unknown = null;
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/store/regions`, {
       headers: {
-        'x-publishable-api-key': PUBLISHABLE_API_KEY!
+        'x-publishable-api-key': PUBLISHABLE_API_KEY || ''
       },
       next: {
         revalidate: 3600,
         tags: [`regions-${cacheId}`]
       },
       cache: 'force-cache'
-    }).then(async response => {
-      const json = await response.json();
-
-      if (!response.ok) {
-        throw new Error(json.message);
-      }
-
-      return json;
     });
-
-    if (!regions?.length) {
-      throw new Error('No regions found. Please set up regions in your Medusa Admin.');
+    const json = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(typeof json?.message === 'string' ? json.message : `HTTP ${response.status}`);
+    const regions = json?.regions;
+    if (Array.isArray(regions) && regions.length > 0) {
+      fetchedRegions = regions;
+    } else {
+      throw new Error('No regions returned from backend.');
     }
-
-    regions.forEach((region: HttpTypes.StoreRegion) => {
-      region.countries?.forEach(c => {
-        regionMapCache.regionMap.set(c.iso_2 ?? '', region);
-      });
-    });
-
-    regionMapCache.regionMapUpdated = Date.now();
+  } catch (err) {
+    fetchFailed = true;
+    fetchError = err;
   }
 
-  return regionMapCache.regionMap;
+  if (fetchedRegions && fetchedRegions.length > 0) {
+    regionMapCache.regionMap.clear();
+    for (const region of fetchedRegions) {
+      for (const c of region.countries ?? []) {
+        regionMapCache.regionMap.set(c.iso_2 ?? '', region);
+      }
+    }
+    regionMapCache.regionMapUpdated = Date.now();
+    lastSuccessfulRegionMap = new Map(regionMapCache.regionMap);
+    lastSuccessfulRegionMapAt = Date.now();
+    return regionMapCache.regionMap;
+  }
+
+  if (lastSuccessfulRegionMap && lastSuccessfulRegionMap.size > 0) {
+    return lastSuccessfulRegionMap;
+  }
+
+  const fallback = new Map<string, HttpTypes.StoreRegion>();
+  (fallbackRegion.countries ?? []).forEach(c => fallback.set(c.iso_2 ?? '', fallbackRegion));
+  if (fetchFailed && process.env.NODE_ENV !== 'production') {
+    console.warn('[middleware] regions fetch failed (using fallback default region).',
+      fetchError instanceof Error ? fetchError.message.slice(0, 120) : '');
+  }
+  if (!lastSuccessfulRegionMap) { lastSuccessfulRegionMap = fallback; lastSuccessfulRegionMapAt = Date.now(); }
+  return fallback;
 }
 
 async function getCountryCode(

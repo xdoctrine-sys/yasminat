@@ -116,5 +116,8 @@
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "patchedDependencies": {
+    "@jridgewell/trace-mapping@0.3.9": "patches/@jridgewell%2Ftrace-mapping@0.3.9.patch"
+  }
 }

@@ -10,11 +10,18 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
+      },
       backgroundColor: {
         primary: "rgba(var(--bg-primary))",
         secondary: "rgba(var(--bg-secondary))",
         tertiary: "rgba(var(--bg-tertiary))",
         disabled: "rgba(var(--bg-disabled))",
+        "surface-pill": {
+          DEFAULT: "rgb(var(--bg-surface-pill))",
+          hover: "rgb(var(--bg-surface-pill-hover))",
+        },
         component: {
           DEFAULT: "rgba(var(--bg-component-primary))",
           hover: "rgba(var(--bg-component-primary-hover))",
@@ -111,6 +118,7 @@ export default {
         primary: "rgba(var(--border-primary))",
         secondary: "rgba(var(--border-secondary))",
         action: "rgba(var(--border-action))",
+        "surface-pill": "rgb(var(--border-surface-pill))",
         negative: {
           DEFAULT: "rgba(var(--border-negative-primary))",
           secondary: "rgba(var(--border-negative-secondary))",

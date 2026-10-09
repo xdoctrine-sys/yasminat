@@ -7,11 +7,12 @@ import { Dropdown } from './Dropdown/Dropdown';
 import { FilterCheckboxOption } from './FilterCheckboxOption/FilterCheckboxOption';
 import { GalleryCarouselItem } from './GalleryCarouselItem/GalleryCarouselItem';
 import { HeaderCategoryNavbar } from './HeaderCategoryNavbar/HeaderCategoryNavbar';
+import { HeroSection } from './HeroSection/HeroSection';
+import { fetchHeroBanners } from '@/lib/data/hero-banners';
 import { LoginForm } from './LoginForm/LoginForm';
 import { Modal } from './Modal/Modal';
 import { NavbarSearch } from './NavbarSearch/NavbarSearch';
 import { ParcelAccordion } from './ParcelAccordion/ParcelAccordion';
-import { ParentCategoryLinks } from './ParentCategoryLinks/ParentCategoryLinks';
 import { PrimeCategoryNavbar } from './PrimeCategoryNavbar/PrimeCategoryNavbar';
 import { ProductCarouselIndicator } from './ProductCarouselIndicator/ProductCarouselIndicator';
 import ProductListingLoadingView from './ProductListingLoadingView/ProductListingLoadingView';
@@ -40,7 +41,6 @@ import { UserNavigation } from './UserNavigation/UserNavigation';
 export {
   PrimeCategoryNavbar,
   CategoryNavbar,
-  ParentCategoryLinks,
   SelectField,
   Accordion,
   FilterCheckboxOption,
@@ -75,5 +75,7 @@ export {
   ProfileDetails,
   ProductListingLoadingView,
   ProductListingNoResultsView,
-  ProductListingProductsView
+  ProductListingProductsView,
+  HeroSection,
+  fetchHeroBanners
 };

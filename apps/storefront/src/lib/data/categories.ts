@@ -19,17 +19,28 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
       ...query,
       fetchOptions: {
         cache: 'force-cache',
-        next: getGlobalCacheOptions(CACHE_TAGS.categories)
+        next: {
+          ...getGlobalCacheOptions(CACHE_TAGS.categories),
+          revalidate: 3600,
+        }
       }
-    } as never) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[] }>)
-    .then(({ product_categories }) => product_categories);
+    }) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[] }>)
+    .then(({ product_categories }) => product_categories)
+    .catch(() => [] as HttpTypes.StoreProductCategory[]);
 
-  const parentCategories = allCategories.filter(cat => !cat.parent_category_id);
+  const byRank = (a: any, b: any) => (a.rank ?? 9999) - (b.rank ?? 9999);
 
-  const mainCategories = parentCategories.flatMap(parent => parent.category_children || []);
+  const parentCategories = allCategories
+    .filter(cat => !cat.parent_category_id && cat.handle !== 'test-categorie-yasminat')
+    .sort(byRank);
+
+  const mainCategories = parentCategories
+    .flatMap(parent => [...(parent.category_children || [])].sort(byRank));
 
   const mainCategoriesWithChildren = mainCategories.map(mainCat => {
-    const children = allCategories.filter(cat => cat.parent_category_id === mainCat.id);
+    const children = allCategories
+      .filter(cat => cat.parent_category_id === mainCat.id)
+      .sort(byRank);
 
     if (children.length > 0) {
       return {
@@ -60,8 +71,9 @@ export const getCategoryByHandle = async (categoryHandle: string) => {
           CACHE_TAGS.category(categoryHandle)
         )
       }
-    } as never) as unknown as Promise<HttpTypes.StoreProductCategoryListResponse>)
-    .then(({ product_categories }) => product_categories[0]);
+    }) as unknown as Promise<HttpTypes.StoreProductCategoryListResponse>)
+    .then(({ product_categories }) => product_categories[0])
+    .catch(() => undefined);
 };
 
 // Medusa's `/store/products?category_id=` filters by the exact category only —

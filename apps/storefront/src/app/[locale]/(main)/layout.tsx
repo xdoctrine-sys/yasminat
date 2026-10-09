@@ -25,7 +25,7 @@ export default async function RootLayout({
   if (!APP_ID || !user || !user.id || !user.email)
     return (
       <>
-        <Header locale={locale} />
+        <Header />
         {children}
         <Footer />
       </>
@@ -40,7 +40,7 @@ export default async function RootLayout({
       userName={userName}
       userEmail={user.email}
     >
-      <Header locale={locale} />
+      <Header />
       {children}
       <Footer />
     </TalkJsProvider>

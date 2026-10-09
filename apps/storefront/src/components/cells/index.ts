@@ -10,7 +10,6 @@ import { ConditionFilter } from './ConditionFilter/ConditionFilter';
 import { HeadingCategories } from './HeadingCategories/HeadingCategories';
 import { LabeledInput } from './LabeledInput/LabeledInput';
 import { MobileNavbar } from './MobileNavbar/MobileNavbar';
-import { Navbar } from './Navbar/Navbar';
 import { OrderAddresses } from './OrderAddresses/OrderAddresses';
 import { OrderProductListItem } from './OrderProductListItem/OrderProductListItem';
 import { OrderTimeline } from './OrderTimeline/OrderTimeline';
@@ -30,7 +29,6 @@ import { SellerRatingFilter } from './SellerRatingFilter/SellerRatingFilter';
 import { SizeFilter } from './SizeFilter/SizeFilter';
 
 export {
-  Navbar,
   Carousel,
   Pagination,
   ProductFilter,
