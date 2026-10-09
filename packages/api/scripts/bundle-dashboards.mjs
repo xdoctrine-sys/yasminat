@@ -43,16 +43,28 @@ if (!fs.existsSync(artifactDir)) {
   fail(`${artifactDir} not found — run \`medusa build\` first (the build script chains it).`)
 }
 
-// The panels bake their backend URL at build time (MERCUR_BACKEND_URL → __BACKEND_URL__).
-// Soft-fallback: warn instead of exit(1) when deploying on Railway to avoid chicken-and-egg
-// (backend must deploy first so storefront can reference it, but backend build needs the URL
-// for the bundled dashboard panels that will run on the same origin anyway via relative paths
-// or can be overridden at runtime via window.__BACKEND_URL__).
+// The panels bake their backend URL into the JS bundle at build time via the
+// Mercur SDK Vite plugin as a LITERAL object const OA={backendUrl:"..."}.
+// There is NO runtime override — shipping http://localhost:9000 in a production
+// bundle means every API call targets the end-user's own machine instead of the
+// deployed backend.  There is no window.__BACKEND_URL__ / fetch interceptor layer
+// anymore (those were removed in commit revert ebd2e07); we fail FAST in production.
 if (isProduction && !process.env.MERCUR_BACKEND_URL && !process.env.VITE_MERCUR_BACKEND_URL) {
+  fail(
+    'NODE_ENV=production but NEITHER MERCUR_BACKEND_URL nor VITE_MERCUR_BACKEND_URL is set.\n' +
+    '   → The admin & vendor panels bake the backend origin into the compiled JS at build time.\n' +
+    '   → Leaving it unset defaults the compiled bundle to http://localhost:9000 which breaks\n' +
+    '     every auth call and all /admin/* routes in a deployed environment (ECONNREFUSED user machine).\n' +
+    '   FIX:\n' +
+    '     export MERCUR_BACKEND_URL="https://<your-deployed-backend-public-origin>"\n' +
+    '   then re-run `medusa build` / the Turborepo build pipeline.\n' +
+    '   (Local development: NODE_ENV is "development" or unset — this check is SKIPPED,\n' +
+    '    http://localhost:9000 default is accepted with a warning in each panel vite.config.)'
+  )
+} else if (!process.env.MERCUR_BACKEND_URL && !process.env.VITE_MERCUR_BACKEND_URL) {
   console.warn(
-    '[bundle-dashboards] WARNING: NODE_ENV=production but MERCUR_BACKEND_URL is not set — ' +
-      'the admin/vendor panels will fall back to http://localhost:9000. ' +
-      'Set MERCUR_BACKEND_URL with the "Build" toggle enabled to bake the deployed origin.'
+    '[bundle-dashboards] WARNING: non-production build without MERCUR_BACKEND_URL — ' +
+    'panels will default their baked backend URL to http://localhost:9000 (works for local dev ONLY).'
   )
 }
 
