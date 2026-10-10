@@ -4,11 +4,7 @@
     "builder": "RAILPACK",
     "rootDirectory": "./",
     "watchPatterns": [
-      "packages/api/**",
-      "apps/admin/**",
-      "apps/vendor/**",
-      "packages/**",
-      "!apps/storefront/**",
+      "**",
       "!**/node_modules/**",
       "!**/.git/**"
     ],

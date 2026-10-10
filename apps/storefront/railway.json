@@ -4,9 +4,7 @@
     "builder": "RAILPACK",
     "rootDirectory": "./",
     "watchPatterns": [
-      "apps/storefront/**",
-      "packages/api/.mercur/**",
-      "packages/api/src/**",
+      "**",
       "!apps/storefront/node_modules/**",
       "!apps/storefront/.next/**",
       "!**/node_modules/**",
