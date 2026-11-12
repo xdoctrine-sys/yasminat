@@ -415,7 +415,7 @@ export const CategoryNavbar = ({
       onFocus={() => {
         if (it.hasChildren) openDropdown(it.id, { immediate: true, triggerId: it.id })
       }}
-      onKeyDown={(e) => handleItemKeyDown(e, it)}
+      onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) => handleItemKeyDown(e, it)}
       className={cn(
         "label-md px-2 py-1 md:my-0 flex items-center justify-between md:whitespace-nowrap text-primary relative z-10 font-medium text-[13px] md:text-[15px] md:font-normal hover:text-action transition-colors",
         it.isActive && "md:border-b-2 md:border-action text-action",
@@ -450,7 +450,7 @@ export const CategoryNavbar = ({
           {allItems.map((it) => (
             <span
               key={`meas-${it.id}`}
-              ref={(el) => (measureItemRefs.current[it.id] = el)}
+              ref={(el) => {measureItemRefs.current[it.id] = el}}
               className="label-md shrink-0 px-2 py-1 md:my-0 items-center justify-between whitespace-nowrap font-medium text-[13px] md:text-[15px] md:font-normal"
               style={{ display: "inline-flex" }}
             >

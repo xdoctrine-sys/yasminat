@@ -15,7 +15,7 @@ export default async function ResetPasswordPage({
   const { token } = await searchParams
 
   return (
-    <main className="container flex justify-center py-16">
+    <main className="screen-content container flex justify-center py-16">
       <Card className="w-full max-w-lg">
         <ProfilePasswordForm token={token} />
       </Card>

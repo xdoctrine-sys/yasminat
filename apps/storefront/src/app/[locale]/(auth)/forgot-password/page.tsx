@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ForgotPasswordPage() {
 
   return (
-    <main className="container">
+    <main className="screen-content container">
       <ForgotPasswordForm />
     </main>
   )

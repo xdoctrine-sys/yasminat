@@ -16,7 +16,7 @@ export type FacetModel = {
   count: number
 }
 
-export const ProductSearchSidebar = ({ facets }: { facets: SearchFacets }) => {
+export const ProductSearchSidebar = ({ facets, inline=false }: { facets: SearchFacets; inline?:boolean }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -43,7 +43,7 @@ export const ProductSearchSidebar = ({ facets }: { facets: SearchFacets }) => {
       />
     ))
 
-  return isMobile ? (
+  return !inline && isMobile ? (
     <>
       <Button onClick={() => setIsOpen(true)} className="w-full uppercase mb-4">
         Filters

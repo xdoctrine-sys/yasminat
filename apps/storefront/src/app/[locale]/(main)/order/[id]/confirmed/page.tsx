@@ -20,7 +20,7 @@ export default async function OrderConfirmedPage(props: Props) {
   }
 
   return (
-    <main className="container">
+    <main className="screen-content container">
       <OrderConfirmedSection order={order} />
     </main>
   )

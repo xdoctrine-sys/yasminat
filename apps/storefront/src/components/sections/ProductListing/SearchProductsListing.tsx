@@ -11,10 +11,13 @@ import {
   ProductListingNoResultsView,
   ProductListingProductsView,
 } from "@/components/molecules"
-import { useSearchParams } from "next/navigation"
+import { useYasminat } from "@/components/yasminat/Provider"
+import { YasIcon } from "@/components/yasminat/Icon"
+import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useRef } from "react"
 import {
   getSearchFacets,
   searchProducts,
@@ -45,6 +48,10 @@ export const SearchProductsListing = ({
   locale?: string
 }) => {
   const searchParams = useSearchParams()
+  const {tr}=useYasminat();
+  const update=useUpdateSearchParams();
+  const router=useRouter(),pathname=usePathname();
+  const filterDialog=useRef<HTMLDialogElement>(null);
   const categoryKey = Array.isArray(category_id)
     ? category_id.join(",")
     : category_id
@@ -113,36 +120,18 @@ export const SearchProductsListing = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, categoryKey, collection_id, seller_id, query, page, sortBy, attributesKey])
 
-  if (isLoading && products.length === 0) return <ProductListingSkeleton />
+
 
   const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
 
-  return (
-    <div className="min-h-[70vh]">
-      <div className="flex justify-between w-full items-center">
-        <div className="my-4 label-md">{`${count} listings`}</div>
-      </div>
-      <div className="hidden md:block">
-        <ProductListingActiveFilters />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <aside className="md:col-span-1">
-          <ProductSearchSidebar facets={facets} />
-        </aside>
-        <div className="md:col-span-3 w-full flex flex-col">
-          {isLoading && <ProductListingLoadingView />}
-
-          {!isLoading && !products.length && <ProductListingNoResultsView />}
-
-          {!isLoading && products.length > 0 && (
-            <ProductListingProductsView products={products} />
-          )}
-
-          <div className="mt-auto">
-            <ProductsPagination pages={pages} />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <div data-testid="product-listing-container">
+   <div className="listing-toolbar"><form className="listing-search" onSubmit={event=>{event.preventDefault();const value=new FormData(event.currentTarget).get('query');update('query',String(value||''));}}><label className="visually-hidden" htmlFor="listing-search">{tr('البحث','Search')}</label><YasIcon name="search" className="sm"/><input id="listing-search" name="query" type="search" defaultValue={query} placeholder={tr('ابحث عن منتج أو متجر','Search products or stores')}/></form><button className="filter-trigger secondary" onClick={()=>filterDialog.current?.showModal()} aria-haspopup="dialog"><YasIcon name="sliders" className="sm"/>{tr('تصفية','Filter')}</button></div>
+   <div className="applied-filters"><ProductListingActiveFilters/></div>
+   <div className="results-bar"><span aria-live="polite">{count} {tr('منتجات','products')} · {query||tr('الكل','All')}</span><button className="text-link" onClick={()=>router.replace(pathname)}>{tr('مسح الفلاتر','Clear filters')}</button></div>
+   {isLoading&&<ProductListingLoadingView/>}
+   {!isLoading&&!products.length&&<ProductListingNoResultsView/>}
+   {products.length>0&&<ProductListingProductsView products={products}/>}
+   <ProductsPagination pages={pages}/>
+   <dialog ref={filterDialog} className="yas-dialog"><h2>{tr('تصفية المنتجات','Filter products')}</h2><label className="field">{tr('الترتيب','Sort')}<select value={sortBy||'created_at'} onChange={event=>update('sortBy',event.target.value)}><option value="created_at">{tr('مختاراتنا','Recommended')}</option><option value="price_asc">{tr('السعر: من الأقل للأعلى','Price: low to high')}</option><option value="price_desc">{tr('السعر: من الأعلى للأقل','Price: high to low')}</option></select></label><ProductSearchSidebar facets={facets} inline/><form method="dialog"><button className="primary wide">{tr('عرض المنتجات','Show products')}</button></form></dialog>
+  </div>
 }

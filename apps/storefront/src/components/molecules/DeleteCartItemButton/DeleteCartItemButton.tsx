@@ -1,7 +1,8 @@
 "use client"
 
 import { Button } from "@/components/atoms"
-import { BinIcon } from "@/icons"
+import {YasIcon} from "@/components/yasminat/Icon"
+import {useYasminat} from "@/components/yasminat/Provider"
 import { useCartContext } from "@/components/providers"
 import { toast } from "@/lib/helpers/toast"
 
@@ -12,6 +13,7 @@ export const DeleteCartItemButton = ({
   id: string
   disabled?: boolean
 }) => {
+  const {tr}=useYasminat();
   const { removeCartItem, isRemovingItem } = useCartContext()
 
   const handleDelete = async (id: string) => {
@@ -30,13 +32,13 @@ export const DeleteCartItemButton = ({
   return (
     <Button
       variant="text"
-      className="w-10 h-10 flex items-center justify-center p-0"
+      className="remove-button"
       onClick={() => handleDelete(id)}
       loading={isRemovingItem}
       disabled={isBtnDisabled}
-      aria-label="Remove item from cart"
+      aria-label={tr('حذف المنتج من السلة','Remove item from cart')}
     >
-      <BinIcon size={20} />
+      <YasIcon name="trash"/>
     </Button>
   )
 }

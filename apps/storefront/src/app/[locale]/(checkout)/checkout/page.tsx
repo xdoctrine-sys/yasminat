@@ -1,3 +1,5 @@
+import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
+import {CartEmpty} from '@/components/organisms/CartEmpty/CartEmpty';
 import { Suspense } from 'react';
 
 import { Metadata } from 'next';
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
 export default async function CheckoutPage({}) {
   return (
     <Suspense
-      fallback={<div className="container flex items-center justify-center" data-testid="checkout-page-loading">Loading...</div>}
+      fallback={<div className="screen-content container flex items-center justify-center" data-testid="checkout-page-loading">Loading...</div>}
     >
       <CheckoutPageContent />
     </Suspense>
@@ -33,7 +35,7 @@ async function CheckoutPageContent({}) {
   const cart = await retrieveCart();
 
   if (!cart) {
-    return notFound();
+    return <main className="screen-content container"><ApprovedIntro type="checkout"/><CartEmpty/></main>;
   }
 
   const shippingMethods = await listCartShippingMethods(cart.id, false);
@@ -42,9 +44,9 @@ async function CheckoutPageContent({}) {
 
   return (
     <PaymentWrapper cart={cart}>
-      <main className="container" data-testid="checkout-page">
-        <div className="grid gap-8 lg:grid-cols-11">
-          <div className="flex flex-col gap-4 lg:col-span-6" data-testid="checkout-steps-container">
+      <main className="screen-content container" data-testid="checkout-page">
+        <ApprovedIntro type="checkout"/><div className="split-layout">
+          <div className="checkout-form-sections" data-testid="checkout-steps-container">
             <CartAddressSection
               cart={cart}
               customer={customer}
@@ -59,7 +61,7 @@ async function CheckoutPageContent({}) {
             />
           </div>
 
-          <div className="lg:col-span-5" data-testid="checkout-review-container">
+          <div className="summary-card" data-testid="checkout-review-container">
             <CartReview cart={cart} />
           </div>
         </div>

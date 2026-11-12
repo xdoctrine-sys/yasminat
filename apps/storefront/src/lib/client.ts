@@ -1,6 +1,6 @@
 import { createClient, InferClient } from '@mercurjs/client';
 
-type Routes = Record<string, unknown>;
+import type { Routes } from '../../../../packages/api/.mercur/routes';
 
 const MEDUSA_BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ||

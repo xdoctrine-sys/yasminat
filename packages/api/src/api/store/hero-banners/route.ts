@@ -34,7 +34,11 @@ export async function GET(_req: MedusaRequest, res: MedusaResponse) {
       const b = bySlot[s]
       out[s] = b ? publicBannerFields(b) : null
     }
-    res.status(200).json({ slots: out, fetched_at: new Date().toISOString() })
+    const now=Date.now();
+    const rows=await svc.listHeroBanners({is_active:true},{take:100,order:{rank:'asc',created_at:'asc'}});
+    const active=rows.filter((b:any)=>(!b.starts_at||new Date(b.starts_at).getTime()<=now)&&(!b.ends_at||new Date(b.ends_at).getTime()>now));
+    const preview=active.filter((b:any)=>b.id.startsWith('hban_yasminat_preview_'));
+    res.status(200).json({ slots: out, banners:(preview.length?preview:active).map(publicBannerFields), fetched_at: new Date().toISOString() })
   } catch (e) {
     res.status(500).json({ error: "Failed to fetch hero banners", slots: { main: null, side_top: null, side_bottom: null } })
   }

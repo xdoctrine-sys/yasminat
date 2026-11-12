@@ -54,7 +54,7 @@ export default async function UserPage({
 
   return (
     <main
-      className="container"
+      className="screen-content container"
       data-testid="orders-page"
     >
       <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">

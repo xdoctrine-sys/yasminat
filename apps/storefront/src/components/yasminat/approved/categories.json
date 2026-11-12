@@ -1,0 +1,119 @@
+[
+  {
+    "id": "plants",
+    "name": {
+      "ar": "النباتات",
+      "en": "Plants"
+    },
+    "icon": "leaf",
+    "visual": "rose"
+  },
+  {
+    "id": "lighting",
+    "name": {
+      "ar": "أضواء الحدائق",
+      "en": "Garden lighting"
+    },
+    "icon": "light",
+    "visual": "lamp"
+  },
+  {
+    "id": "decor",
+    "name": {
+      "ar": "ديكور البيت والحديقة",
+      "en": "Home & garden décor"
+    },
+    "icon": "leaf",
+    "visual": "garden-decor"
+  },
+  {
+    "id": "pots",
+    "name": {
+      "ar": "الأحواض والأصص",
+      "en": "Pots & planters"
+    },
+    "icon": "leaf",
+    "visual": "gift"
+  },
+  {
+    "id": "nutrition",
+    "name": {
+      "ar": "مغذيات وأسمدة النباتات",
+      "en": "Plant nutrients & fertilizer"
+    },
+    "icon": "leaf",
+    "visual": "nutrition"
+  },
+  {
+    "id": "care",
+    "name": {
+      "ar": "العناية بالنبات",
+      "en": "Plant care"
+    },
+    "icon": "leaf",
+    "visual": "care-kit"
+  },
+  {
+    "id": "artificial",
+    "name": {
+      "ar": "نباتات صناعية",
+      "en": "Artificial plants"
+    },
+    "icon": "leaf",
+    "visual": "hamper"
+  },
+  {
+    "id": "indoor",
+    "name": {
+      "ar": "نباتات داخلية",
+      "en": "Indoor plants"
+    },
+    "icon": "leaf",
+    "visual": "rose"
+  },
+  {
+    "id": "outdoor",
+    "name": {
+      "ar": "نباتات خارجية",
+      "en": "Outdoor plants"
+    },
+    "icon": "leaf",
+    "visual": "outdoor"
+  },
+  {
+    "id": "ornamental",
+    "name": {
+      "ar": "نباتات زينة",
+      "en": "Ornamental plants"
+    },
+    "icon": "leaf",
+    "visual": "plant"
+  },
+  {
+    "id": "flowering",
+    "name": {
+      "ar": "نباتات مزهرة",
+      "en": "Flowering plants"
+    },
+    "icon": "flower",
+    "visual": "blooming"
+  },
+  {
+    "id": "vases",
+    "name": {
+      "ar": "المزهريات",
+      "en": "Vases"
+    },
+    "icon": "leaf",
+    "visual": "vase"
+  },
+  {
+    "id": "supplies",
+    "name": {
+      "ar": "مستلزمات النباتات",
+      "en": "Plant supplies"
+    },
+    "icon": "leaf",
+    "visual": "care-kit"
+  }
+]

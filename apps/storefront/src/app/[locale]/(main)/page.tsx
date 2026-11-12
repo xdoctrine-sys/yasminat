@@ -1,3 +1,7 @@
+import {fetchHeroSlides} from '@/lib/data/hero-banners';
+import {listCategories} from '@/lib/data/categories';
+import {listProducts} from '@/lib/data/products';
+import {ApprovedHome as YasHome} from '@/components/yasminat/approved/Home';
 import {
   BannerSection,
   BlogSection,
@@ -43,9 +47,9 @@ export async function generateMetadata({
     locales,
   })
 
-  const title = "Home"
+  const title = "ياسمينات | Yasminat"
   const description =
-    "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront."
+    "نباتات وأحواض ومستلزمات البيت والحديقة — ياسمينات."
   const ogImage = "/B2C_Storefront_Open_Graph.png"
 
   return {
@@ -97,61 +101,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-
-  const headersList = await headers()
-  const host = headersList.get("host")
-  const protocol = headersList.get("x-forwarded-proto") || "https"
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`
-
-  const siteName =
-    process.env.NEXT_PUBLIC_SITE_NAME ||
-    "Mercur B2C Demo - Marketplace Storefront"
-
-  return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-primary">
-      <Script
-        id="ld-org"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: siteName,
-            url: `${baseUrl}/${locale}`,
-            logo: `${baseUrl}/favicon.ico`,
-          }),
-        }}
-      />
-      <Script
-        id="ld-website"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: siteName,
-            url: `${baseUrl}/${locale}`,
-            inLanguage: toHreflang(locale),
-          }),
-        }}
-      />
-
-      <HeroSection locale={locale} />
-      <div className="px-4 lg:px-8 w-full">
-        <HomeProductSection heading="trending listings" locale={locale} home />
-      </div>
-      <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading="SHOP BY CATEGORY" />
-      </div>
-      <BannerSection />
-      <ShopByStyleSection />
-      <BlogSection />
-    </main>
-  )
+export default async function Home({params}:{params:Promise<{locale:string}>}) {
+ const {locale}=await params;
+ const [{parentCategories},{response},slots]=await Promise.all([
+  listCategories(),
+  listProducts({countryCode:locale,queryParams:{limit:100,fields:'*categories,*variants.calculated_price,*variants.options,*options.values'}}),
+  fetchHeroSlides(),
+ ]);
+ return <YasHome products={response.products} categories={parentCategories} locale={locale} banners={slots}/>;
 }

@@ -1,3 +1,5 @@
+import {listCategories,collectCategorySubtreeIds} from '@/lib/data/categories';
+import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { Suspense } from "react"
 
@@ -70,6 +72,8 @@ async function AllCategories({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const {parentCategories}=await listCategories();
+  const previewIds=parentCategories.some(c=>c.metadata?.yasminat_preview_batch)?parentCategories.flatMap(collectCategorySubtreeIds):undefined;
 
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -100,7 +104,7 @@ async function AllCategories({
   }))
 
   return (
-    <main className="container">
+    <main className="screen-content container">
       <Script
         id="ld-breadcrumbs-categories"
         type="application/ld+json"
@@ -130,17 +134,15 @@ async function AllCategories({
           }),
         }}
       />
-      <div className="hidden md:block mb-2">
-        <Breadcrumbs items={breadcrumbsItems} />
-      </div>
+      <ApprovedIntro type="listing"/>
 
-      <h1 className="heading-xl uppercase">All Products</h1>
+
 
       <Suspense fallback={<div data-testid="all-categories-page-loading"><ProductListingSkeleton /></div>}>
         {bot ? (
-          <ProductListing showSidebar locale={locale} />
+          <ProductListing showSidebar locale={locale} category_id={previewIds}/>
         ) : (
-          <SearchProductsListing locale={locale} />
+          <SearchProductsListing locale={locale} category_id={previewIds}/>
         )}
       </Suspense>
     </main>

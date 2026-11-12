@@ -1,9 +1,12 @@
 'use client';
+import {ApprovedBreadcrumb} from '@/components/yasminat/approved/Breadcrumb';
+import {useYasminat} from '@/components/yasminat/Provider';
 
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
+import Link from '@/components/molecules/LocalizedLink/LocalizedLink';
+import {useParams} from 'next/navigation';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FieldError, FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
 
@@ -32,6 +35,7 @@ export const LoginForm = () => {
 };
 
 const Form = () => {
+  const {tr}=useYasminat();
   const [isAuthError, setIsAuthError] = useState(false);
   const {
     handleSubmit,
@@ -39,6 +43,7 @@ const Form = () => {
     formState: { errors, isSubmitting }
   } = useFormContext();
   const router = useRouter();
+  const params=useParams();
   const searchParams = useSearchParams();
   const isSessionExpired = searchParams.get('sessionExpired') === 'true';
   const isSessionRequired = searchParams.get('sessionRequired') === 'true';
@@ -51,14 +56,13 @@ const Form = () => {
     const res = await login(formData);
 
     if (res.success) {
-      router.push('/user');
+      router.push(`/${params.locale}/user`);
       await transferCart();
     } else {
       toast.error({ title: res.message || 'An error occurred. Please try again.' });
     }
 
-    setIsAuthError(false);
-    router.push('/user');
+    setIsAuthError(!res.success);
   };
 
   const clearApiError = () => {
@@ -79,10 +83,10 @@ const Form = () => {
 
   return (
     <main
-      className="container"
+      className="screen-content container"
       data-testid="login-page"
     >
-      <div className="mx-auto mt-6 w-full max-w-xl space-y-4">
+      <div className="auth-layout">
         {authMessage && (
           <Alert
             title={authMessage}
@@ -92,18 +96,18 @@ const Form = () => {
           />
         )}
         <div
-          className="rounded-sm border p-4"
+          className="auth-content"
           data-testid="login-form-container"
         >
-          <h1 className="heading-md mb-8 uppercase text-primary">Log in</h1>
+          <ApprovedBreadcrumb name={tr('تسجيل الدخول','Sign in')}/><div className="auth-intro"><h2>{tr('تسجيل الدخول','Sign in')}</h2><p>{tr('حيّاك في ياسمينات، ادخل بحسابك.','Welcome to Yasminat. Sign in to your account.')}</p></div>
           <form
-            onSubmit={handleSubmit(submit)}
+            onSubmit={handleSubmit(submit)} className="auth-form"
             data-testid="login-form"
           >
             <div className="space-y-4">
               <LabeledInput
-                label="E-mail"
-                placeholder="Your e-mail address"
+                label={tr('البريد الإلكتروني','E-mail')}
+                placeholder={tr('بريدك الإلكتروني','Your e-mail address')}
                 error={
                   (errors.email as FieldError) ||
                   (isAuthError ? ({ message: '' } as FieldError) : undefined)
@@ -114,8 +118,8 @@ const Form = () => {
                 })}
               />
               <LabeledInput
-                label="Password"
-                placeholder="Your password"
+                label={tr('كلمة المرور','Password')}
+                placeholder={tr('كلمة المرور','Your password')}
                 type="password"
                 error={
                   (errors.password as FieldError) ||
@@ -133,22 +137,22 @@ const Form = () => {
               className="label-md mt-4 block text-right uppercase text-action-on-secondary"
               data-testid="login-forgot-password-link"
             >
-              Forgot your password?
+              {tr('نسيت كلمة المرور؟','Forgot your password?')}
             </Link>
 
             <Button
-              className="mt-8 w-full uppercase"
+              className="primary wide"
               disabled={isSubmitting}
               data-testid="login-submit-button"
             >
-              Log in
+              {tr('تسجيل الدخول','Log in')}
             </Button>
           </form>
         </div>
 
-        <div className="rounded-sm border p-4">
-          <h2 className="heading-md mb-4 uppercase text-primary">
-            Don&apos;t have an account yet?
+        <div className="auth-switch">
+          <h2 className="visually-hidden">
+            {tr('ما عندك حساب؟',"Don't have an account yet?")}
           </h2>
           <Link
             href="/register"
@@ -156,9 +160,9 @@ const Form = () => {
           >
             <Button
               variant="tonal"
-              className="mt-8 flex w-full justify-center uppercase"
+              className="secondary wide"
             >
-              Create account
+              {tr('إنشاء حساب','Create account')}
             </Button>
           </Link>
         </div>

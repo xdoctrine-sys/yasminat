@@ -32,7 +32,7 @@ export const SellerOffersListing = async ({
         <ProductListingNoResultsView />
       ) : (
         <>
-          <div className="flex flex-wrap gap-4" data-testid="seller-offers-list">
+          <div className="product-grid" data-testid="seller-offers-list">
             {(offers as StoreOffer[]).map((offer) => (
               <OfferCard key={offer.id} offer={offer} locale={locale} />
             ))}

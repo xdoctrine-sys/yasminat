@@ -125,7 +125,7 @@ export const NavbarSearch = ({
               limit: SUGGEST_LIMIT,
               fields: "id,handle,title,thumbnail",
               fetchOptions: { cache: "no-store" },
-            })
+            } as never)
             .then((r: any) => ((r as { products?: HttpTypes.StoreProduct[] }).products ?? []) as HttpTypes.StoreProduct[]),
           sdk.store.productCategories
             .query({
@@ -133,7 +133,7 @@ export const NavbarSearch = ({
               limit: SUGGEST_LIMIT,
               fields: "id,handle,name",
               fetchOptions: { cache: "force-cache", next: { revalidate: 3600 } },
-            })
+            } as never)
             .then((r: any) =>
               ((r as { product_categories?: HttpTypes.StoreProductCategory[] }).product_categories ??
                 []) as HttpTypes.StoreProductCategory[]

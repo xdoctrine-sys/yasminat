@@ -44,7 +44,7 @@ export const ProductListing = async ({
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-4">
         {showSidebar && <ProductSidebar />}
         <section className={showSidebar ? "col-span-3" : "col-span-4"} data-testid="product-listing-section">
-          <div className="flex flex-wrap gap-4" data-testid="product-list">
+          <div className="product-grid" data-testid="product-list">
             <ProductsList products={products} />
           </div>
           <ProductsPagination pages={pages} />

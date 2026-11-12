@@ -54,7 +54,7 @@ export function Input({
 
   return (
     <div className="flex flex-col">
-      <label className="label-md">{label}</label>
+      {label&&<label htmlFor={props.id||props.name} className="label-md">{label}</label>}
       <div className="relative mt-2">
         {icon && onIconClick && (
           <button
@@ -74,6 +74,7 @@ export function Input({
         )}
 
         <input
+          id={props.id||props.name}
           className={cn(
             "w-full px-[16px] py-[12px] border rounded-sm bg-component-secondary focus:border-primary focus:outline-none focus:ring-0",
             error && "border-negative focus:border-negative",

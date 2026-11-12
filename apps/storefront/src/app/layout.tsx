@@ -1,32 +1,31 @@
+import {ApprovedFrame} from '@/components/yasminat/approved/Frame';
 import type { Metadata } from 'next';
-import { DM_Sans } from 'next/font/google';
+import {yasLanguage} from '@/components/yasminat/server';
+import {YasminatProvider} from '@/components/yasminat/Provider';
+import './yasminat.css';
+import './approved-design.css';
+import './approved-frame.css';
 
 import './globals.css';
 
 import { Toaster } from '@medusajs/ui';
 import Head from 'next/head';
 
-import { HtmlLangSetter } from '@/components/atoms/HtmlLangSetter/HtmlLangSetter';
 import { retrieveCart } from '@/lib/data/cart';
 
 import { Providers } from './providers';
 
-const dmSans = DM_Sans({
-  variable: '--font-sans',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
-});
+
 
 export const metadata: Metadata = {
   title: {
     template: `%s | ${
-      process.env.NEXT_PUBLIC_SITE_NAME || 'Mercur B2C Demo - Marketplace Storefront'
+      process.env.NEXT_PUBLIC_SITE_NAME || 'Yasminat'
     }`,
-    default: process.env.NEXT_PUBLIC_SITE_NAME || 'Mercur B2C Demo - Marketplace Storefront'
+    default: process.env.NEXT_PUBLIC_SITE_NAME || 'Yasminat'
   },
   description:
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Mercur B2C Demo - Marketplace Storefront',
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Yasminat',
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000')
 };
 
@@ -38,11 +37,12 @@ export default async function RootLayout({
   const cart = await retrieveCart();
 
   // default lang updated by HtmlLangSetter
-  const htmlLang = 'en';
+  const htmlLang = await yasLanguage();
 
   return (
     <html
       lang={htmlLang}
+      dir={htmlLang === 'ar' ? 'rtl' : 'ltr'}
       className=""
     >
       <Head>
@@ -111,10 +111,11 @@ export default async function RootLayout({
           href="https://api.mercurjs.com"
         />
       </Head>
-      <body className={`${dmSans.variable} ${dmSans.className} relative bg-primary text-secondary antialiased`}>
-        <HtmlLangSetter />
-        <Providers cart={cart}>{children}</Providers>
-        <Toaster position="top-right" />
+      <body className={`yasminat-site relative bg-primary text-secondary antialiased`}>
+        <YasminatProvider initialLanguage={htmlLang}>
+          <Providers cart={cart}><ApprovedFrame>{children}</ApprovedFrame></Providers>
+          <Toaster position="top-right" />
+        </YasminatProvider>
       </body>
     </html>
   );

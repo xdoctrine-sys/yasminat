@@ -24,13 +24,15 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
           revalidate: 3600,
         }
       }
-    }) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[] }>)
+    } as never) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[] }>)
     .then(({ product_categories }) => product_categories)
     .catch(() => [] as HttpTypes.StoreProductCategory[]);
 
   const byRank = (a: any, b: any) => (a.rank ?? 9999) - (b.rank ?? 9999);
 
-  const parentCategories = allCategories
+  const preview=allCategories.filter(cat=>cat.metadata?.yasminat_preview_batch);
+  const visibleCategories=preview.length?preview:allCategories;
+  const parentCategories = visibleCategories
     .filter(cat => !cat.parent_category_id && cat.handle !== 'test-categorie-yasminat')
     .sort(byRank);
 
@@ -71,7 +73,7 @@ export const getCategoryByHandle = async (categoryHandle: string) => {
           CACHE_TAGS.category(categoryHandle)
         )
       }
-    }) as unknown as Promise<HttpTypes.StoreProductCategoryListResponse>)
+    } as never) as unknown as Promise<HttpTypes.StoreProductCategoryListResponse>)
     .then(({ product_categories }) => product_categories[0])
     .catch(() => undefined);
 };

@@ -17,7 +17,7 @@ export default async function ReturnOrderPage({
   const returnMethods = await retriveReturnMethods(id)
 
   return (
-    <main className="container">
+    <main className="screen-content container">
       <OrderReturnSection
         order={order}
         returnReasons={returnReasons}

@@ -18,3 +18,8 @@ packages/api/static/
 
 # Logs
 *.log
+
+# Local QA/build output
+**/.next-release/
+.cache/
+**/*.tsbuildinfo

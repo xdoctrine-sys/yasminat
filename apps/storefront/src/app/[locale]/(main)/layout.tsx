@@ -28,6 +28,7 @@ export default async function RootLayout({
         <Header />
         {children}
         <Footer />
+
       </>
     );
 
@@ -43,6 +44,7 @@ export default async function RootLayout({
       <Header />
       {children}
       <Footer />
+
     </TalkJsProvider>
   );
 }

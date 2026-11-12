@@ -1,0 +1,98 @@
+[
+  {
+    "id": "bloom",
+    "name": {
+      "ar": "مشتل روضة النبات",
+      "en": "Rawdat Plants Nursery"
+    },
+    "tag": {
+      "ar": "نباتات ومغذيات وأسمدة",
+      "en": "Plants, nutrients and fertilizer"
+    },
+    "image": "rose",
+    "icon": "leaf",
+    "demoProducts": null
+  },
+  {
+    "id": "garden",
+    "name": {
+      "ar": "مشتل الحديقة",
+      "en": "The Garden Nursery"
+    },
+    "tag": {
+      "ar": "نباتات ومستلزمات الحدائق",
+      "en": "Plants and garden essentials"
+    },
+    "image": "plant",
+    "icon": "leaf",
+    "demoProducts": null
+  },
+  {
+    "id": "gifting",
+    "name": {
+      "ar": "ركن الأحواض والنبات",
+      "en": "Pots & Plants Corner"
+    },
+    "tag": {
+      "ar": "أحواض ومزهريات وتفاصيل نباتية",
+      "en": "Planters, vases and botanical details"
+    },
+    "image": "vase",
+    "icon": "store",
+    "demoProducts": null
+  },
+  {
+    "id": "nursery-demo-4",
+    "name": {
+      "ar": "متجر إضاءة تجريبي",
+      "en": "Demo lighting store"
+    },
+    "tag": {
+      "ar": "مثال محلي للإضاءة، ليس متجرًا فعليًا",
+      "en": "Local lighting example, not a real store"
+    },
+    "icon": "light",
+    "image": "string-lights",
+    "demoProducts": [
+      "lamp",
+      "string-lights"
+    ]
+  },
+  {
+    "id": "nursery-demo-5",
+    "name": {
+      "ar": "متجر ديكور تجريبي",
+      "en": "Demo décor store"
+    },
+    "tag": {
+      "ar": "مثال محلي للديكور والأحواض",
+      "en": "Local décor and planter example"
+    },
+    "icon": "store",
+    "image": "garden-decor",
+    "demoProducts": [
+      "garden-decor",
+      "gift",
+      "vase",
+      "hamper"
+    ]
+  },
+  {
+    "id": "nursery-demo-6",
+    "name": {
+      "ar": "متجر عناية تجريبي",
+      "en": "Demo plant care store"
+    },
+    "tag": {
+      "ar": "مثال محلي لمغذيات النبات والعناية",
+      "en": "Local plant nutrition and care example"
+    },
+    "icon": "leaf",
+    "image": "nutrition",
+    "demoProducts": [
+      "nutrition",
+      "fertilizer",
+      "care-kit"
+    ]
+  }
+]

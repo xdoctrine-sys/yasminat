@@ -34,7 +34,7 @@ export const ProductDetails = async ({
   const seller = getBuyboxWinner(rankOffers(offers))?.seller
 
   return (
-    <div>
+    <div className="detail-copy">
       <ProductDetailsHeader
         product={product}
         locale={locale}
@@ -47,11 +47,7 @@ export const ProductDetails = async ({
         attributes={product?.attribute_values || []}
       />
       <ProductDetailsShipping />
-      <ProductDetailsSeller seller={seller} />
-      <ProductDetailsFooter
-        tags={product?.tags || []}
-        posted={product?.created_at}
-      />
+
     </div>
   )
 }

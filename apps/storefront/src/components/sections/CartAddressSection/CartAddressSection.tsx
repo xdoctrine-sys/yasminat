@@ -1,5 +1,6 @@
 "use client"
 
+import {useYasminat} from '@/components/yasminat/Provider'
 import { Heading, Text, useToggleState } from "@medusajs/ui"
 import { setAddresses } from "@/lib/data/cart"
 import compareAddresses from "@/lib/helpers/compare-addresses"
@@ -20,6 +21,7 @@ export const CartAddressSection = ({
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
 }) => {
+  const {tr}=useYasminat();
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -54,18 +56,18 @@ export const CartAddressSection = ({
   }
 
   return (
-    <div className="border p-4 rounded-sm bg-ui-bg-interactive" data-testid="checkout-step-address">
+    <div className="form-section" data-testid="checkout-step-address">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
           className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
         >
-          {!isOpen && <CheckCircleSolid />} Shipping Address
+          {!isOpen && <CheckCircleSolid />} {tr('عنوان التوصيل','Shipping address')}
         </Heading>
         {!isOpen && isAddress && (
           <Text>
             <Button onClick={handleEdit} variant="tonal" data-testid="checkout-address-edit-button">
-              Edit
+              {tr('تعديل','Edit')}
             </Button>
           </Text>
         )}
@@ -90,7 +92,7 @@ export const CartAddressSection = ({
               data-testid="submit-address-button"
               variant="tonal"
             >
-              Save
+              {tr('حفظ ومتابعة','Save and continue')}
             </Button>
             <ErrorMessage
               error={message !== "success" && message}

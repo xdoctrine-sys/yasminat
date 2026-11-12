@@ -26,6 +26,7 @@ export type PublicBanner = {
 
 export type HeroBannersResponse = {
   slots: Record<HeroBannerSlot, PublicBanner | null>;
+  banners?: PublicBanner[];
   fetched_at?: string;
 };
 
@@ -64,4 +65,11 @@ export async function fetchHeroBanners(): Promise<Record<HeroBannerSlot, PublicB
   } catch (e) {
     return EMPTY_SLOTS;
   }
+}
+
+/** Carousel payload extends the existing slots API without changing its consumers. */
+export async function fetchHeroSlides():Promise<PublicBanner[]>{
+ const base=process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL||process.env.MEDUSA_BACKEND_URL||'http://127.0.0.1:9000';
+ const key=process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
+ try{const response=await fetch(`${base}${HERO_API_URL_PATH}`,{headers:key?{'x-publishable-api-key':key}:{},next:{revalidate:60,tags:[CACHE_TAGS.heroBanners]}});if(!response.ok)return [];const data=await response.json() as HeroBannersResponse;return data.banners||Object.values(data.slots||{}).filter((b):b is PublicBanner=>!!b);}catch{return [];}
 }

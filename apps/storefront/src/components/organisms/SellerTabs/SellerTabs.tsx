@@ -21,8 +21,8 @@ export const SellerTabs = ({
   ]
 
   return (
-    <div className="mt-8">
-      <TabsList list={tabsList} activeTab={tab} />
+    <div id="vendor-products">
+
       <TabsContent value="offers" activeTab={tab}>
         <Suspense
           key={page}

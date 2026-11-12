@@ -1,3 +1,4 @@
+import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { getCategoryByHandle, collectCategorySubtreeIds } from "@/lib/data/categories"
 import { Suspense } from "react"
@@ -120,7 +121,7 @@ async function Category({
   }))
 
   return (
-    <main className="container">
+    <main className="screen-content container">
       <Script
         id="ld-breadcrumbs-category"
         type="application/ld+json"
@@ -150,11 +151,9 @@ async function Category({
           }),
         }}
       />
-      <div className="hidden md:block mb-2">
-        <Breadcrumbs items={breadcrumbsItems} />
-      </div>
+      <ApprovedIntro type="listing" name={category.name}/>
 
-      <h1 className="heading-xl uppercase">{category.name}</h1>
+
 
       <Suspense fallback={<div data-testid="category-page-loading"><ProductListingSkeleton /></div>}>
         {bot ? (

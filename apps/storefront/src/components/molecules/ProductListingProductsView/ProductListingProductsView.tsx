@@ -7,11 +7,11 @@ interface Props {
 
 const ProductListingProductsView = ({ products }: Props) => (
   <div className="w-full">
-    <ul className="flex flex-wrap gap-4">
+    <ul className="product-grid">
       {products.map(
         (product) =>
            (
-            <li key={product.id} className="w-full lg:w-[calc(25%-1rem)] min-w-[250px]">
+            <li key={product.id} className="min-w-0">
               <ProductCard
                 product={product}
                 className="w-full h-full lg:w-full min-w-0"

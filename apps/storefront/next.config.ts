@@ -8,7 +8,7 @@ try { if (backendUrl) backendHost = new URL(backendUrl).hostname; } catch {}
 const backendIsLocal = backendHost === '127.0.0.1' || backendHost === 'localhost';
 const allowLocalFileBackend = !isDev ? backendIsLocal : true;
 
-const remotePatterns: NextConfig['images']['remotePatterns'] = [
+const remotePatterns: NonNullable<NextConfig['images']>['remotePatterns'] = [
   {
     protocol: 'https',
     hostname: 'medusa-public-images.s3.eu-west-1.amazonaws.com'
@@ -65,6 +65,7 @@ remotePatterns.push({
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  distDir: process.env.YASMINAT_NEXT_DIST_DIR || ".next",
   trailingSlash: false,
   reactStrictMode: true,
   logging: {
@@ -79,7 +80,7 @@ const nextConfig: NextConfig = {
     remotePatterns
   },
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: false
   }
 };
 

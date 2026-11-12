@@ -14,8 +14,8 @@ export const LabeledInput = ({
   className,
   ...props
 }: LabeledInputProps) => (
-  <label className={cn("label-sm block", className)}>
-    <p className={cn(error && "text-negative")}>{label}</p>
+  <label className={cn("field", className)}>
+    <span className={cn(error && "text-negative")}>{label}</span>
     <Input error={!!error} {...props} />
     {error && <p className="label-sm text-negative">{error.message}</p>}
   </label>

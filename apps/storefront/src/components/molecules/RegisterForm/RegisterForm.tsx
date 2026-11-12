@@ -1,4 +1,6 @@
 "use client"
+import {ApprovedBreadcrumb} from '@/components/yasminat/approved/Breadcrumb';
+import {useYasminat} from '@/components/yasminat/Provider';
 import {
   FieldError,
   FieldValues,
@@ -13,7 +15,7 @@ import { registerFormSchema, RegisterFormData } from "./schema"
 import { signup } from "@/lib/data/customer"
 import { useState } from "react"
 import { Container } from "@medusajs/ui"
-import Link from "next/link"
+import Link from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { PasswordValidator } from "@/components/cells/PasswordValidator/PasswordValidator"
 import { toast } from "@/lib/helpers/toast"
 
@@ -37,6 +39,7 @@ export const RegisterForm = () => {
 }
 
 const Form = () => {
+  const {tr}=useYasminat();
   const [passwordError, setPasswordError] = useState({
     isValid: false,
     lower: false,
@@ -75,25 +78,25 @@ const Form = () => {
   }
 
   return (
-    <main className="container" data-testid="register-page">
-      <Container className="border max-w-xl mx-auto mt-8 p-4" data-testid="register-form-container">
-        <h1 className="heading-md text-primary uppercase mb-8">
-          Create account
-        </h1>
-        <form onSubmit={handleSubmit(submit)} data-testid="register-form">
+    <main className="screen-content container" data-testid="register-page">
+      <div className="auth-layout" data-testid="register-form-container"><ApprovedBreadcrumb name={tr('إنشاء حساب جديد','Create account')}/><div className="auth-intro">
+        <h2>
+          {tr('إنشاء حساب','Create account')}
+        </h2><p>{tr('سجّل بيانات حسابك في ياسمينات.','Create your Yasminat account.')}</p></div>
+        <form className="auth-form" onSubmit={handleSubmit(submit)} data-testid="register-form">
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <LabeledInput
               className="md:w-1/2"
-              label="First name"
-              placeholder="Your first name"
+              label={tr('الاسم الأول','First name')}
+              placeholder={tr('اسمك الأول','Your first name')}
               error={errors.firstName as FieldError}
               data-testid="register-first-name-input"
               {...register("firstName")}
             />
             <LabeledInput
               className="md:w-1/2"
-              label="Last name"
-              placeholder="Your last name"
+              label={tr('اسم العائلة','Last name')}
+              placeholder={tr('اسم العائلة','Your last name')}
               error={errors.lastName as FieldError}
               data-testid="register-last-name-input"
               {...register("lastName")}
@@ -102,16 +105,16 @@ const Form = () => {
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <LabeledInput
               className="md:w-1/2"
-              label="E-mail"
-              placeholder="Your e-mail address"
+              label={tr('البريد الإلكتروني','E-mail')}
+              placeholder={tr('بريدك الإلكتروني','Your e-mail address')}
               error={errors.email as FieldError}
               data-testid="register-email-input"
               {...register("email")}
             />
             <LabeledInput
               className="md:w-1/2"
-              label="Phone"
-              placeholder="Your phone number"
+              label={tr('رقم الجوال','Phone')}
+              placeholder={tr('رقم جوالك','Your phone number')}
               error={errors.phone as FieldError}
               data-testid="register-phone-input"
               {...register("phone")}
@@ -120,8 +123,8 @@ const Form = () => {
           <div>
             <LabeledInput
               className="mb-4"
-              label="Password"
-              placeholder="Your password"
+              label={tr('كلمة المرور','Password')}
+              placeholder={tr('كلمة المرور','Your password')}
               type="password"
               error={errors.password as FieldError}
               data-testid="register-password-input"
@@ -134,28 +137,28 @@ const Form = () => {
           </div>
 
           <Button
-            className="w-full flex justify-center mt-8 uppercase"
+            className="primary wide"
             disabled={isSubmitting}
             loading={isSubmitting}
             data-testid="register-submit-button"
           >
-            Create account
+            {tr('إنشاء حساب','Create account')}
           </Button>
         </form>
-      </Container>
-      <Container className="border max-w-xl mx-auto mt-8 p-4">
+      </div>
+      <div className="auth-switch auth-layout">
         <h2 className="heading-md text-primary uppercase mb-8">
-          Already have an account?
+          {tr('عندك حساب؟','Already have an account?')}
         </h2>
         <Link href="/login" data-testid="register-login-link">
           <Button
             variant="tonal"
-            className="w-full flex justify-center mt-8 uppercase"
+            className="primary wide"
           >
-            Log in
+            {tr('تسجيل الدخول','Log in')}
           </Button>
         </Link>
-      </Container>
+      </div>
     </main>
   )
 }

@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/atoms';
+import {YasIcon} from '@/components/yasminat/Icon';
+import {useYasminat} from '@/components/yasminat/Provider';
 import { useCartContext } from '@/components/providers';
 import { toast } from '@/lib/helpers/toast';
 
@@ -15,6 +17,7 @@ export const UpdateCartItemButton = ({
   quantity: number;
   lineItemId: string;
 }) => {
+  const {tr}=useYasminat();
   const { updateCartItem, isUpdatingItem } = useCartContext();
   const [pendingQuantity, setPendingQuantity] = useState(quantity);
   const debounceTimerRef = useRef<NodeJS.Timeout>(null);
@@ -63,14 +66,15 @@ export const UpdateCartItemButton = ({
   const isIncreaseDisabled = isUpdatingItem || !lineItemId;
 
   return (
-    <div className="mt-2 flex items-center gap-4">
+    <div className="quantity compact" role="group" aria-label={tr('كمية المنتج','Item quantity')}>
       <Button
         variant="tonal"
         className="flex h-8 w-8 items-center justify-center"
         disabled={isDecreaseDisabled}
+        aria-label={tr('تقليل الكمية','Decrease quantity')}
         onClick={() => handleQuantityChange(pendingQuantity - 1)}
       >
-        -
+        <YasIcon name="minus"/>
       </Button>
       <span
         className={`font-medium transition-all duration-300 ${
@@ -85,9 +89,10 @@ export const UpdateCartItemButton = ({
         variant="tonal"
         className="flex h-8 w-8 items-center justify-center"
         disabled={isIncreaseDisabled}
+        aria-label={tr('زيادة الكمية','Increase quantity')}
         onClick={() => handleQuantityChange(pendingQuantity + 1)}
       >
-        +
+        <YasIcon name="plus"/>
       </Button>
     </div>
   );

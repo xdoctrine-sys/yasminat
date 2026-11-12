@@ -1,3 +1,5 @@
+import {NurseryPicker,NurseryBanner} from '@/components/yasminat/Stores'
+import {listNurseries} from '@/lib/data/yasminat-sellers'
 import { SellerTabs } from "@/components/organisms"
 import { SellerPageHeader } from "@/components/sections"
 import { retrieveCustomer } from "@/lib/data/customer"
@@ -80,14 +82,15 @@ export default async function SellerPage({
   const user = await retrieveCustomer()
 
   const tab = "offers"
+  const sellers=await listNurseries()
 
   if (!seller) {
     return null
   }
 
   return (
-    <main className="container">
-      <SellerPageHeader header seller={seller} user={user} />
+    <main className="screen-content container">
+      <NurseryPicker sellers={sellers} current={seller.id}/><NurseryBanner seller={seller}/>
       <SellerTabs
         tab={tab}
         seller_id={seller.id}

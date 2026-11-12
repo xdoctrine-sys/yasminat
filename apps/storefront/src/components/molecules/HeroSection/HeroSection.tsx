@@ -9,17 +9,17 @@ import {
   type PublicBanner,
 } from "@/lib/data/hero-banners"
 
-function getLocalizedText(bilingual: { en: string | null; ar: string | null }): string {
+function getLocalizedText(bilingual: { en: string | null | undefined; ar: string | null | undefined }): string {
   const { en, ar } = bilingual
   if (typeof en === "string" && en.trim().length > 0) return en.trim()
   if (typeof ar === "string" && ar.trim().length > 0) return ar.trim()
   return ""
 }
 
-const isExternalHttps = (href: string | null): href is string =>
+const isExternalHttps = (href: string | null | undefined): href is string =>
   typeof href === "string" && /^https:\/\/[^\s"'<>]+$/i.test(href)
 
-const isInternalPath = (href: string | null): href is string =>
+const isInternalPath = (href: string | null | undefined): href is string =>
   typeof href === "string" && /^\/(?!\/)[A-Za-z0-9/_\-#?%.=&+,]*$/.test(href)
 
 type BlockProps = {

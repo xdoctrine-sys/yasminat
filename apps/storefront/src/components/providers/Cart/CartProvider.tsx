@@ -107,6 +107,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     } catch (error) {
       console.error('Error updating item quantity:', error);
       await refreshCart();
+      throw error;
     } finally {
       setIsUpdatingItem(false);
       setIsUpdating(false);
@@ -161,6 +162,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     } catch (error) {
       console.error('Error removing item from cart:', error);
       await refreshCart();
+      throw error;
     } finally {
       setIsRemovingItem(false);
       setIsUpdating(false);
