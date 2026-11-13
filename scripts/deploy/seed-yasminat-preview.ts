@@ -588,7 +588,7 @@ export default async function seed({container}:ExecArgs){
  const flows=load('@medusajs/medusa/core-flows');
  const {AttributeType,SellerStatus,MercurModules}=load('@mercurjs/types');
  const sellerModule=container.resolve(MercurModules.SELLER) as any;
- const manifest:any={batch:BATCH,categories:existingCategories.map(c=>c.id),products:existingProducts.map(p=>p.id),sellers:[],members:[],stock_locations:[],attributes:[],offers:[],banners:[],created_at:new Date().toISOString()};
+ const manifest:any={batch:BATCH,categories:existingCategories.map(c=>c.id),products:existingProducts.map(p=>p.id),sellers:[],members:[],seller_members:[],stock_locations:[],attributes:[],offers:[],banners:[],created_at:new Date().toISOString()};
  const save=()=>writeFileSync('/tmp/'+BATCH+'-manifest.json',JSON.stringify(manifest,null,2));
  const missingCategories=categories.filter(c=>!existingCategories.some(e=>e.handle==='yasminat-preview-'+c.id));
  if(missingCategories.length){const {result}=await flows.createProductCategoriesWorkflow(container).run({input:{product_categories:missingCategories.map(c=>({name:c.name.ar,handle:'yasminat-preview-'+c.id,is_active:true,is_internal:false,rank:categories.indexOf(c),description:'نباتات ومستلزمات مناسبة لهذا القسم.',metadata:{yasminat_preview_batch:BATCH,yasminat_category:c.id,name_en:c.name.en,thumbnail:ASSETS+products.find(p=>p.id===c.visual)!.image.replace(/^assets\//,'')}}))}});existingCategories.push(...result);manifest.categories=existingCategories.map(c=>c.id);save();}
@@ -599,9 +599,13 @@ export default async function seed({container}:ExecArgs){
   if(seller&&seller.external_id!==BATCH+':'+shop.id)throw Error('Seller handle collision');
   if(!seller)seller=await sellerModule.createSellers({name:shop.name.ar,handle,email:shop.id+'@yasminat-preview.invalid',currency_code:'qar',status:SellerStatus.OPEN,external_id:BATCH+':'+shop.id,description:shop.tag.ar+' · متجر تجريبي للعرض فقط',logo:ASSETS+products.find(p=>p.id===shop.image)!.image.replace(/^assets\//,''),banner:ASSETS+products.find(p=>p.id===shop.image)!.image.replace(/^assets\//,''),metadata:{yasminat_preview_batch:BATCH,name_en:shop.name.en}});
   let member=(await sellerModule.listMembers({email:shop.id+'@yasminat-preview.invalid'}))[0];
-  if(!member)member=await sellerModule.createMembers({email:shop.id+'@yasminat-preview.invalid',first_name:'Preview',is_active:false,sellers:[seller.id],metadata:{yasminat_preview_batch:BATCH}});
+  if(!member)member=await sellerModule.createMembers({email:shop.id+'@yasminat-preview.invalid',first_name:'Preview',is_active:false,metadata:{yasminat_preview_batch:BATCH}});
+  if(member.metadata?.yasminat_preview_batch!==BATCH)throw Error('Member email collision');
+  let membership=(await sellerModule.listSellerMembers({seller_id:seller.id,member_id:member.id}))[0];
+  if(!membership)membership=await sellerModule.createSellerMembers({seller_id:seller.id,member_id:member.id,role_id:null,is_owner:false,metadata:{yasminat_preview_batch:BATCH}});
+  manifest.seller_members.push(membership.id);
   let location=(await graph('stock_location',['id','name'],{name:BATCH+':'+shop.id}))[0];
-  if(!location){const {result}=await core.createSellerStockLocationsWorkflow(container).run({input:{seller_id:seller.id,locations:[{name:BATCH+':'+shop.id,metadata:{yasminat_preview_batch:BATCH},address:{country_code:'qa',city:'Doha'}}]}});location=result[0];await flows.linkSalesChannelsToStockLocationWorkflow(container).run({input:{id:location.id,add:[channels[0].id]}});}
+  if(!location){const {result}=await core.createSellerStockLocationsWorkflow(container).run({input:{seller_id:seller.id,locations:[{name:BATCH+':'+shop.id,metadata:{yasminat_preview_batch:BATCH},address:{country_code:'qa',city:'Doha',address_1:'Preview only - no fulfillment'}}]}});location=result[0];await flows.linkSalesChannelsToStockLocationWorkflow(container).run({input:{id:location.id,add:[channels[0].id]}});}
   sellers.push({...seller,ref:shop.id,memberId:member.id,locationId:location.id});manifest.sellers.push(seller.id);manifest.members.push(member.id);manifest.stock_locations.push(location.id);save();
  }
  const axes=[{name:'المقاس',handle:'yasminat-preview-size',values:['صغير','متوسط','كبير']},{name:'اللون',handle:'yasminat-preview-color',values:['أبيض','رملي','فحمي']}];
@@ -623,11 +627,11 @@ export default async function seed({container}:ExecArgs){
  const catalog=await graph('product',['id','handle','metadata','variants.id','variants.sku'],{handle:products.map(p=>'yasminat-preview-'+p.id)});
  manifest.products=catalog.map(p=>p.id);save();
  for(const seller of sellers){
-  const current=await graph('offer',['id','sku','metadata'],{seller_id:seller.id});
+  const current=await graph('offer',['id','sku','variant_id','metadata'],{seller_id:seller.id});
   const offers=[];
   for(const p of products.filter(p=>shops.find(s=>s.id===seller.ref)?.demoProducts?.includes(p.id) || p.shop===seller.ref))for(const variant of catalog.find(c=>c.handle==='yasminat-preview-'+p.id)!.variants){
-   const sku='OFFER-'+variant.sku;
-   if(current.some(o=>o.sku===sku))continue;
+   const sku='OFFER-'+seller.ref.toUpperCase()+'-'+variant.sku;
+   if(current.some(o=>o.variant_id===variant.id&&o.metadata?.yasminat_preview_batch===BATCH))continue;
    offers.push({seller_id:seller.id,created_by:seller.memberId,sku,variant_id:variant.id,shipping_profile_id:profiles[0].id,manage_inventory:true,allow_backorder:false,inventory_items:[{sku,stock_levels:[{location_id:seller.locationId,stocked_quantity:0}]}],prices:[{amount:p.price,currency_code:'qar'}],metadata:{yasminat_preview_batch:BATCH,preview_only:true,yasminat_old_price:p.old}});
   }
   if(offers.length)await core.createOffersWorkflow(container).run({input:{offers}});

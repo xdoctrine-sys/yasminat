@@ -1,3 +1,4 @@
+import {ApprovedCheckoutSteps} from '@/components/yasminat/approved/CheckoutSteps';
 import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
 import {CartEmpty} from '@/components/organisms/CartEmpty/CartEmpty';
 import { Suspense } from 'react';
@@ -35,7 +36,7 @@ async function CheckoutPageContent({}) {
   const cart = await retrieveCart();
 
   if (!cart) {
-    return <main className="screen-content container"><ApprovedIntro type="checkout"/><CartEmpty/></main>;
+    return <main className="screen-content container"><ApprovedIntro type="checkout"/><ApprovedCheckoutSteps/><CartEmpty/></main>;
   }
 
   const shippingMethods = await listCartShippingMethods(cart.id, false);
@@ -45,7 +46,7 @@ async function CheckoutPageContent({}) {
   return (
     <PaymentWrapper cart={cart}>
       <main className="screen-content container" data-testid="checkout-page">
-        <ApprovedIntro type="checkout"/><div className="split-layout">
+        <ApprovedIntro type="checkout"/><ApprovedCheckoutSteps/><div className="split-layout">
           <div className="checkout-form-sections" data-testid="checkout-steps-container">
             <CartAddressSection
               cart={cart}

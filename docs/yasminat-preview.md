@@ -60,3 +60,15 @@ carousel. Preview banners take precedence while the batch is present.
   need a complete visual review. These are acknowledged review items.
 - Physical phone testing is performed by the user after deployment; browser
   emulation is not a substitute for that test.
+
+## Online seed verification
+
+The batch was applied and rerun successfully without duplicating records: 13
+products, 13 categories, 6 stores, 30 zero-stock offers and 5 banners. Six inactive
+audit members have no authentication identities or credentials. The local backup
+of the resource manifest is retained outside the repository for later cleanup.
+
+The existing cache revalidation secret is referenced by the frontend
+`REVALIDATE_SECRET` and backend `STOREFRONT_REVALIDATE_SECRET` variables, matching
+the application's existing inbound/outbound cache-hook configuration. No secret
+values are included in the repository.

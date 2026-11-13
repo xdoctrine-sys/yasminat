@@ -32,7 +32,7 @@ export const ProductDetailsPage = async ({
       <ApprovedBreadcrumb name={prod.title} category={prod.categories?.find(c=>c.metadata?.yasminat_category!=='plants')||prod.categories?.[0]}/>
       <div className="product-detail" data-testid="product-details-page">
         <div className="detail-picture" data-testid="product-gallery-container">
-          <ProductGallery images={prod?.images || []} />
+          <ProductGallery images={prod?.images || []} title={prod.title} />
         </div>
         <div data-testid="product-details-container">
           <ProductDetails

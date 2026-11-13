@@ -1,0 +1,148 @@
+/* Generated from the approved mobile review; run scripts/design/port-mobile-review-css.cjs. */
+/* Mobile review: match the working storefront edges and announcement strip. */
+.yas-approved .screen{border:0;border-radius:0}
+.yas-approved .screen .original-home{border:0!important;border-radius:0!important;margin:0!important;padding:0!important}
+.yas-approved .screen .original-home>div:first-child{min-height:28px;padding:4px 8px!important;justify-content:center!important;border-radius:0!important}
+.yas-approved .screen .original-home>div:first-child>p{display:grid!important;grid-template-columns:minmax(0,1fr) 14px;align-items:center!important;gap:12px!important;width:100%;margin:0!important;font-size:11px!important;line-height:16px!important;white-space:normal!important}
+.yas-approved .screen .original-home>div:first-child>p>svg{position:static;display:block;width:14px!important;height:14px!important;margin:0;align-self:center}
+
+/* Mobile navigation is provided by the bottom tabs. */
+@container artboard (max-width:649.99px){.yas-approved .screen .source-mobile-header a:has(svg[data-icon="menu"]){display:none!important}}
+
+/* Keep the mobile search in the single header row, with its icon inside the field. */
+@container artboard (max-width:649.99px){
+ .yas-approved .screen .source-mobile-header{display:grid!important;grid-template-columns:max-content minmax(0,1fr) 36px;align-items:center!important;gap:8px!important;padding:12px!important}
+ .yas-approved .screen .source-mobile-header>div:first-child{display:contents!important}
+ .yas-approved .screen .source-mobile-header>div:first-child>div:first-child{grid-column:1;grid-row:1}
+ .yas-approved .screen .source-mobile-header>div:first-child>div:last-child{grid-column:3;grid-row:1;margin:0!important;gap:0!important;justify-content:center!important}
+ .yas-approved .screen .source-mobile-header>form{grid-column:2;grid-row:1;position:relative;display:block!important;width:100%;height:40px;min-width:0;padding:0!important;margin:0!important;border:0!important;border-radius:999px!important;background:transparent!important}
+ .yas-approved .screen .source-mobile-header>form>svg{position:absolute;inset-inline-start:11px;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none}
+ .yas-approved .screen .source-mobile-header>form>div,.yas-approved .screen .source-mobile-header>form>div>div{width:100%;min-width:0;height:100%;margin:0!important}
+ .yas-approved .screen .source-mobile-header>form input{display:block!important;width:100%!important;height:40px!important;min-height:0!important;padding-block:0!important;padding-inline-start:34px!important;padding-inline-end:10px!important;font-size:11px!important;line-height:normal!important;border:0!important;border-radius:999px!important;background:#f3f3f3!important}
+}
+
+/* Keep Offers in its original lower row; match only the shopping button height. */
+@container artboard (max-width:649.99px){
+ .yas-approved .screen .promotion-controls .offers-reopen{height:36px;min-height:36px;line-height:18px;padding:5px 8px}
+}
+
+/* Breadcrumbs are omitted from every mobile page. */
+@container artboard (max-width:649.99px){.yas-approved .screen .breadcrumb,.yas-approved .screen #listing-breadcrumb{display:none!important}}
+
+/* Categories use floating mobile controls rather than a painted header strip. */
+.yas-approved .screen .history-back,.yas-approved .screen .floating-page-title,.yas-approved .screen .floating-page-subtitle{display:none}
+@container artboard (max-width:649.99px){
+ .yas-approved .screen .floating-page-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:10px;min-height:68px;padding:12px!important;background:transparent!important;border:0;pointer-events:none}
+ .yas-approved .screen .floating-page-header>*{pointer-events:auto}
+ .yas-approved .screen .floating-page-header .phone-brand{display:none}
+ .yas-approved .screen .floating-page-header .floating-page-title{display:block;grid-row:1;grid-column:2;min-width:0;margin:0;font-size:17px;font-weight:600;line-height:1.45;text-align:center;color:#244638}
+ .yas-approved .screen .category-page-intro>h2{display:none}
+ .yas-approved .screen .category-page-intro{padding-top:0;margin-top:0;padding-bottom:12px;margin-bottom:12px}
+ .yas-approved .screen .category-page-intro>p{margin:0;text-align:center}
+ .yas-approved .screen .floating-page-header,.yas-approved .screen .floating-page-header>*{box-shadow:none!important;filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+ .yas-approved .screen .floating-page-header .notification-button{grid-row:1;grid-column:3;background:#fbf9f5;box-shadow:none}
+ .yas-approved .screen .floating-page-header .history-back{grid-row:1;grid-column:1;display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid #dce3da;border-radius:50%;background:#fff;color:#244638;box-shadow:none}
+ .yas-approved .screen .history-back[hidden]{display:none!important}
+ .yas-approved .screen .history-back .icon{width:22px;height:22px;transform:scaleX(-1)}
+ html[dir=ltr] .yas-approved .screen .history-back .icon{transform:none}
+ .yas-approved .screen:has(>.floating-page-header) .page-intro{position:static}
+}
+
+/* Keep the category subtitle directly beneath its heading in the same header. */
+@container artboard (max-width:649.99px){
+ .yas-approved .screen .floating-page-header{row-gap:0}
+ .yas-approved .screen .floating-page-header .floating-page-subtitle{display:block;grid-row:2;grid-column:1/-1;margin:-4px 0 0;font-size:11px;line-height:17px;text-align:center;color:#718477}
+ .yas-approved .screen .category-page-intro{display:none}
+}
+
+/* The category header scrolls away; only the category choices remain pinned. */
+@container artboard (max-width:649.99px){
+ .yas-approved .screen>.floating-page-header{position:static}
+ .yas-approved .screen:has(>.floating-page-header) .category-menu{position:sticky;top:0;z-index:10;margin-block:0 14px;margin-inline:-12px;width:calc(100% + 24px);padding-block:8px;background:#fbf9f5;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+/* Product listing mirrors Categories; its search/filter row stays pinned. */
+@container artboard (max-width:649.99px){
+ .yas-approved .screen:has(>.floating-page-header) .listing-page-intro{display:none}
+ .yas-approved .screen:has(>.floating-page-header) .listing-toolbar{position:sticky;top:0;z-index:10;margin-inline:-12px;width:calc(100% + 24px);padding:8px 12px;background:#fbf9f5;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+/* Tabs follow each page's scroll direction; the content fills the frame. */
+.yas-approved .screen-shell>.mobile-tabs{transition:transform .18s ease,opacity .18s ease,visibility 0s}
+.yas-approved .screen-shell.tabs-scroll-hidden>.mobile-tabs{transform:translateY(100%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .18s ease,opacity .18s ease,visibility 0s .18s}
+.yas-approved .screen-shell>.mobile-contact-dock{transition:bottom .18s ease}
+.yas-approved .screen-shell.tabs-scroll-hidden>.mobile-contact-dock{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+@media(prefers-reduced-motion:reduce){.yas-approved .screen-shell>.mobile-tabs,.yas-approved .screen-shell>.mobile-contact-dock{transition:none!important}}
+
+@container artboard (max-width:649.99px){.yas-approved .screen-shell>.screen{height:100%;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))!important;scroll-padding-bottom:16px}}
+
+/* Product photos: a swipeable stage followed immediately by square thumbnails. */
+.yas-approved .product-gallery{width:100%;min-width:0}
+.yas-approved .product-gallery-track{display:flex;width:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;border-radius:16px;background:#f3f3f3}
+.yas-approved .product-gallery-track::-webkit-scrollbar{display:none}
+.yas-approved .product-gallery-slide{flex:0 0 100%;width:100%;min-width:0;aspect-ratio:1;scroll-snap-align:start;scroll-snap-stop:always}
+.yas-approved .product-gallery-slide img{display:block;width:100%;height:100%;object-fit:contain;border-radius:0!important}
+.yas-approved .product-gallery-thumbnails{display:flex;gap:6px;padding:6px 0 0;overflow-x:auto;scrollbar-width:none}
+.yas-approved .product-gallery-thumbnail{position:relative;display:block;flex:0 0 56px;width:56px;height:56px;padding:0;border:0;border-radius:16px;overflow:hidden;background:#fff}
+.yas-approved .product-gallery-thumbnail::after{content:"";position:absolute;inset:0;border:1px solid #24463826;border-radius:inherit;pointer-events:none}
+.yas-approved .product-gallery-thumbnail[aria-pressed=true]::after{border-color:#24463880}
+.yas-approved .product-gallery-thumbnail img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit!important}
+.yas-approved #YAS-004 .detail-picture{aspect-ratio:auto!important;overflow:visible!important;border:0!important;border-radius:0!important;background:transparent}
+@container artboard (max-width:649.99px){
+ .yas-approved #YAS-004>.screen>.screen-content{padding:0!important}
+ .yas-approved #YAS-004 .product-detail{display:block!important;margin:0!important;max-width:none!important}
+ .yas-approved #YAS-004 .detail-picture{margin:1px 1px 12px!important;width:calc(100% - 2px)!important}
+ .yas-approved #YAS-004 .detail-copy{padding-inline:12px}
+ .yas-approved #YAS-004 .screen-content>.section{margin-inline:12px}
+}
+
+@container artboard (max-width:649.99px){.yas-approved .screen:has(>.floating-page-header) .cart-page-intro{display:none}}
+
+@container artboard (max-width:649.99px){.yas-approved .screen:has(>.floating-page-header) .checkout-page-intro,.yas-approved .screen:has(>.floating-page-header) .vendor-picker{display:none}}
+
+/* Checkout progress spans the content width, with a label at either end. */
+.yas-approved .checkout-steps{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px}
+.yas-approved .checkout-steps>b,.yas-approved .checkout-steps>span{flex:0 0 auto;white-space:nowrap}
+.yas-approved .checkout-steps>i{flex:1;max-width:none}
+
+@container artboard (max-width:649.99px){.yas-approved .checkout-steps{width:calc(100% + 24px);margin-inline:-12px;padding-inline:0}}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-009 .page-intro{position:static;top:auto;padding-top:0;margin-top:0}}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-009 .screen:has(>.floating-page-header) .page-intro{display:none}}
+
+/* Auth pages have no bottom navigation reserve. */
+.yas-approved #YAS-010>.mobile-contact-dock,.yas-approved #YAS-011>.mobile-contact-dock{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-012 .screen:has(>.floating-page-header) .page-intro{display:none}}
+
+.yas-approved #YAS-012>.mobile-contact-dock{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-013 .screen:has(>.floating-page-header) .page-intro{display:none}}
+.yas-approved #YAS-013>.mobile-contact-dock{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-014 .screen:has(>.floating-page-header) .page-intro{display:none}}
+.yas-approved #YAS-014>.mobile-contact-dock{bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+
+/* Give the bag a clearer green and a contrasting warm count badge. */
+.yas-approved .mobile-tabs a[data-nav="bag"]{color:#45654f}
+.yas-approved .mobile-tabs a[data-nav="bag"]>span:last-child{font-weight:500}
+.yas-approved .mobile-tabs a[data-nav="bag"].active{color:#244638}
+.yas-approved .mobile-tabs a[data-nav="bag"].active>span:last-child{font-weight:700}
+.yas-approved .mobile-tabs .tab-count{min-width:18px;height:18px;background:#b45f43;color:#fff;font-weight:700;outline:2px solid #fbf9f5}
+
+/* A brief two-step bounce, followed by a quiet pause. */
+@keyframes yasCartBadgeBounce{0%,8%,24%,100%{transform:translateY(0)}13%{transform:translateY(-5px)}18%{transform:translateY(0)}21%{transform:translateY(-2px)}}
+@media(prefers-reduced-motion:no-preference){
+ .yas-approved .mobile-tabs .tab-count:not(.feedback-count){animation:yasCartBadgeBounce 3.8s ease-in-out infinite}
+ .yas-approved .tabs-scroll-hidden .mobile-tabs .tab-count{animation-play-state:paused}
+}
+
+@keyframes yasCartIconTurn{0%,8%,26%,100%{transform:rotate(0deg)}15%{transform:rotate(-12deg)}}
+@media(prefers-reduced-motion:no-preference){
+ .yas-approved .mobile-tabs a[data-nav="bag"] .tab-icon>.icon{transform-origin:50% 65%;animation:yasCartIconTurn 3.8s ease-in-out infinite}
+ .yas-approved .tabs-scroll-hidden .mobile-tabs a[data-nav="bag"] .tab-icon>.icon{animation-play-state:paused}
+}
+
+@container artboard (max-width:649.99px){.yas-approved #YAS-009 .screen:has(>.floating-page-header) .account-page-intro{display:none}}
+@container artboard (max-width:649.99px){.yas-approved .order-page .order-user-navigation,.yas-approved .order-page .order-page-title{display:none}}

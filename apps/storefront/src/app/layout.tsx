@@ -5,6 +5,7 @@ import {YasminatProvider} from '@/components/yasminat/Provider';
 import './yasminat.css';
 import './approved-design.css';
 import './approved-frame.css';
+import './approved-mobile-review.css';
 
 import './globals.css';
 

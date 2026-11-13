@@ -1,3 +1,4 @@
+import {ApprovedOrderEmpty} from '@/components/yasminat/approved/Orders';
 import { isEmpty } from 'lodash';
 
 import { LoginForm, ParcelAccordion, UserNavigation } from '@/components/molecules';
@@ -14,7 +15,7 @@ export default async function UserPage({
 }) {
   const user = await retrieveCustomer();
 
-  if (!user) return <LoginForm />;
+  if (!user) return <main className="screen-content container order-page"><ApprovedOrderEmpty requiresLogin/></main>;
 
   const orders = await listOrders();
 
@@ -54,34 +55,18 @@ export default async function UserPage({
 
   return (
     <main
-      className="screen-content container"
+      className="screen-content container order-page"
       data-testid="orders-page"
     >
       <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">
-        <UserNavigation />
+        <div className="order-user-navigation"><UserNavigation /></div>
         <div
           className="space-y-8 md:col-span-3"
           data-testid="orders-container"
         >
-          <h1 className="heading-md uppercase">Orders</h1>
+          <h1 className="heading-md uppercase order-page-title">Orders</h1>
           {isEmpty(orders) ? (
-            <div
-              className="text-center"
-              data-testid="orders-empty-state"
-            >
-              <h3
-                className="heading-lg uppercase text-primary"
-                data-testid="no-orders-heading"
-              >
-                No orders
-              </h3>
-              <p
-                className="mt-2 text-lg text-secondary"
-                data-testid="no-orders-description"
-              >
-                You haven&apos;t placed any order yet. Once you place an order, it will appear here.
-              </p>
-            </div>
+            <ApprovedOrderEmpty/>
           ) : (
             <>
               <div

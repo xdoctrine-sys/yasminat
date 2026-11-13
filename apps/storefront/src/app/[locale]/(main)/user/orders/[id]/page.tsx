@@ -1,3 +1,4 @@
+import {ApprovedOrderLinks} from '@/components/yasminat/approved/Orders';
 import { UserNavigation } from "@/components/molecules"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { Button } from "@/components/atoms"
@@ -16,14 +17,13 @@ export default async function UserPage({
   const { id } = await params
 
   const user = await retrieveCustomer()
+  if (!user) return redirect("/login")
   const orderGroup = (await retrieveOrderGroup(id)) as any
 
-  if (!user) return redirect("/login")
-
   return (
-    <main className="screen-content container">
+    <main className="screen-content container order-page">
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
-        <UserNavigation />
+        <div className="order-user-navigation"><UserNavigation /></div>
         <div className="md:col-span-3">
           <LocalizedClientLink href="/user/orders">
             <Button
@@ -45,7 +45,7 @@ export default async function UserPage({
               </span>
             </p>
           </div>
-          <OrderDetailsSection orderGroup={orderGroup} />
+          <OrderDetailsSection orderGroup={orderGroup} /><ApprovedOrderLinks id={id}/>
         </div>
       </div>
     </main>
