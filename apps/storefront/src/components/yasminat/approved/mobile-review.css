@@ -146,3 +146,9 @@ html,body{margin:0;padding:0}
 
 @container artboard (max-width:649.99px){#YAS-009 .screen:has(>.floating-page-header) .account-page-intro{display:none}}
 @container artboard (max-width:649.99px){.order-page .order-user-navigation,.order-page .order-page-title{display:none}}
+
+/* Standalone mobile exits preserve the header-free product and auth layouts. */
+@container artboard (max-width:649.99px){
+ .screen>.standalone-history-back{position:absolute;inset-inline-start:12px;top:max(12px,env(safe-area-inset-top,0px));z-index:12;display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid #dce3da;border-radius:50%;background:#fff;color:#244638;box-shadow:none;filter:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+ .screen[data-screen="10"]>.screen-content,.screen[data-screen="11"]>.screen-content{padding-top:68px!important}
+}

@@ -32,7 +32,13 @@ export function YasHeader({categories=[]}: {categories?: Category[]}) {
   return()=>{navigation?.removeEventListener('currententrychange',sync);window.removeEventListener('popstate',sync);window.removeEventListener('pageshow',sync);};
  },[path]);
  const screen=yasminatScreen(path,String(params.locale));
- if([1,4,8,10,11].includes(screen))return null;
+ if([4,10,11].includes(screen)){
+  const canClose=screen!==4;
+  if(!canGoBack&&!canClose)return null;
+  if(!canGoBack)return <LocalizedClientLink className="history-back standalone-history-back" href="/" replace aria-label={tr('إغلاق','Close')}><YasIcon name="x"/></LocalizedClientLink>;
+  return <button type="button" className="history-back standalone-history-back" aria-label={tr('الرجوع','Go back')} onClick={()=>router.back()}><YasIcon name="arrow"/></button>;
+ }
+ if([1,8].includes(screen))return null;
  const copy:Record<number,[string,string]>={
   2:[tr('كل شيء جميل، في مكان واحد','A world of beautiful things'),tr('تصفّح النباتات والأحواض ومستلزمات البيت والحديقة.','Explore plants, pots and garden essentials.')],
   3:[tr('اختَر اللي يشبه ذوقك','Find something you love'),tr('نباتات داخلية وخارجية وأحواض ومستلزمات حدائق.','Indoor and outdoor plants, pots and garden essentials.')],

@@ -68,3 +68,13 @@ of 13 preview categories after 237 legacy entries, explicit query bounds and
 later-page failures.
 
 Publication and public URL checks are recorded after deployment.
+
+## Standalone exits
+
+The header-free mobile product page now overlays a white 44px circular back
+control when browser history is available. Login and registration use the same
+history-aware back control; direct entries instead get a close link to the
+localized home page. The close link works before client hydration. These controls
+add no header strip or footer, preserve the gallery position, and mirror the back
+arrow for Arabic and English. Verified local navigation with and without history,
+including returning from registration to login and closing a direct login entry.
