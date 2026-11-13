@@ -58,4 +58,13 @@ updates are wired into the live commerce flow. Real checkout fields remain.
   7 sellers, 30 offers, 0 orders and 0 customers. No seed or cleanup runs as part
   of this UI release. Prior seed fixes are retained for reproducible future use.
 
+## Category pagination correction
+
+The production browser showed only the old Plants category because the first
+100 of 250 categories omitted the preview batch. Default category loading now
+collects every API page, while explicit bounded/offset queries keep their scope.
+The 237 legacy categories remain unchanged in the backend. Tests cover a batch
+of 13 preview categories after 237 legacy entries, explicit query bounds and
+later-page failures.
+
 Publication and public URL checks are recorded after deployment.

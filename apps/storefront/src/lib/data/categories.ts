@@ -2,21 +2,25 @@ import { HttpTypes } from '@medusajs/types';
 
 import { sdk } from '@/lib/client';
 import { CACHE_TAGS, getGlobalCacheOptions } from './cache-tags';
+import {collectCategoryPages} from '../helpers/category-pages';
 
 interface CategoriesProps {
   query?: Record<string, unknown>;
 }
 
 export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) => {
-  const limit = query?.limit || 100;
+  const limit = typeof query?.limit==='number'&&query.limit>0?query.limit:100;
+  const requestedOffset=Number(query?.offset??0);
+  const initialOffset=Number.isFinite(requestedOffset)?Math.max(0,requestedOffset):0;
 
-  const allCategories = await (sdk.store.productCategories
+  const loadPage=(offset:number)=>(sdk.store.productCategories
     .query({
       fields: 'id,handle,name,rank,metadata,parent_category_id,description,*category_children',
       include_descendants_tree: true,
       include_ancestors_tree: true,
       limit,
       ...query,
+      offset:initialOffset+offset,
       fetchOptions: {
         cache: 'force-cache',
         next: {
@@ -24,9 +28,8 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
           revalidate: 3600,
         }
       }
-    } as never) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[] }>)
-    .then(({ product_categories }) => product_categories)
-    .catch(() => [] as HttpTypes.StoreProductCategory[]);
+    } as never) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[];count?:number }>);
+  const allCategories=await collectCategoryPages(loadPage,limit,query?.limit===undefined&&query?.offset===undefined).catch(()=>[] as HttpTypes.StoreProductCategory[]);
 
   const byRank = (a: any, b: any) => (a.rank ?? 9999) - (b.rank ?? 9999);
 
