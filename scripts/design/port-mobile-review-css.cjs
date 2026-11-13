@@ -1,7 +1,7 @@
 // Scope approved review snapshots for the native storefront.
 const fs=require('fs');
 const postcss=require('../../apps/storefront/node_modules/postcss');
-for(const name of ['mobile-review','tablet-review','category-review']){
+for(const name of ['mobile-review','tablet-review','category-review','desktop-header-review']){
 const source=`apps/storefront/src/components/yasminat/approved/${name}.css`;
 const root=postcss.parse(fs.readFileSync(source,'utf8'));
 function split(s){let depth=0,start=0,out=[];for(let i=0;i<s.length;i++){if(s[i]==='('||s[i]==='[')depth++;if(s[i]===')'||s[i]===']')depth--;if(s[i]===','&&depth===0){out.push(s.slice(start,i));start=i+1;}}out.push(s.slice(start));return out;}

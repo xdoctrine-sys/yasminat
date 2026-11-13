@@ -17,7 +17,7 @@ class Parser(HTMLParser):
   if len(self.stack)>1:self.stack.pop()
  def handle_data(self,data):self.stack[-1]['children'].append(data)
 p=Parser();p.feed(markup)
-slots={'FILTERS':'<ApprovedFilters {...props} />','PRODUCTS':'<ApprovedProducts {...props} />','CATEGORIES':'<ApprovedCategories {...props} />','DECOR_VIDEO':'<ApprovedVideo />','HERO_PROMOTIONS':'<ApprovedPromotions {...props} />','HOME_HEADER_ACTIONS':'<ApprovedNotifications />'}
+slots={'DESKTOP_CATEGORY_NAV':'<DesktopCategoryNav categories={props.categories} />','FILTERS':'<ApprovedFilters {...props} />','PRODUCTS':'<ApprovedProducts {...props} />','CATEGORIES':'<ApprovedCategories {...props} />','HERO_PROMOTIONS':'<ApprovedPromotions {...props} />','HOME_HEADER_ACTIONS':'<ApprovedNotifications />'}
 routes={'#YAS-001':'/','#YAS-002':'/departments','#YAS-003':'/categories','#YAS-004':'/categories','#YAS-005':'/cart'}
 english={'ياسمينات':'Yasminat','تسوق حسب القسم':'Shop by category','جميع الأقسام':'All categories','مختارات ياسمينات':'Yasminat selection','منتجات تستحق الاهتمام':'Products worth exploring','عرض الكل':'View all','لمسات تكمّل جمال بيتك':'Details that complete your home','اكتشف المجموعة':'Explore the collection','عالم النباتات والبيت الجميل والحدائق':'Plants, beautiful homes and gardens','نباتات ومستلزمات البيت والحديقة إلى جميع أنحاء قطر':'Plants and home & garden essentials across Qatar'}
 attrs={'class':'className','for':'htmlFor','tabindex':'tabIndex','viewbox':'viewBox','stroke-width':'strokeWidth','stroke-linecap':'strokeLinecap','stroke-linejoin':'strokeLinejoin','fill-rule':'fillRule','clip-rule':'clipRule','preserveaspectratio':'preserveAspectRatio','xlink:href':'xlinkHref','readonly':'readOnly','maxlength':'maxLength','autocomplete':'autoComplete'}
@@ -60,10 +60,11 @@ def render(n):
 jsx=''.join(render(c) for c in p.root['children'])
 code='''"use client";
 // Generated from the exact approved source template; handlers are native React.
+import {DesktopCategoryNav} from './DesktopCategoryNav';
 import {useRouter,useParams} from 'next/navigation';
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink';
 import {useYasminat} from '../Provider';
-import {ApprovedFilters,ApprovedProducts,ApprovedCategories,ApprovedVideo,ApprovedPromotions,ApprovedNotifications,type ApprovedHomeProps} from './Parts';
+import {ApprovedFilters,ApprovedProducts,ApprovedCategories,ApprovedPromotions,ApprovedNotifications,type ApprovedHomeProps} from './Parts';
 export function ApprovedHome(props:ApprovedHomeProps){
  const {tr,language}=useYasminat();const router=useRouter(),params=useParams();
  const onSearch=(event:React.FormEvent<HTMLFormElement>)=>{event.preventDefault();const value=new FormData(event.currentTarget).get('search')?.toString().trim();router.push(`/${params.locale}/categories${value?`?query=${encodeURIComponent(value)}`:''}`);};
