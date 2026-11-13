@@ -1,0 +1,8 @@
+/* Keep the approved cascade in one dependency chain in development and release. */
+@import './yasminat.css';
+@import './approved-design.css';
+@import './approved-frame.css';
+@import './approved-mobile-review.css';
+@import './approved-tablet-review.css';
+@import './approved-category-review.css';
+@import './globals.css';

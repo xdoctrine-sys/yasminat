@@ -1,0 +1,8 @@
+/* The fragrance section belongs to the existing home/garden decor branch. */
+.category-parent-link{display:inline-flex;align-items:center;gap:5px;margin-bottom:8px;font-size:11px;color:#62785f;text-decoration:underline;text-underline-offset:3px}
+.category-parent-link .icon{width:13px;height:13px;flex-shrink:0}
+.category-banner .category-symbol{width:64px;height:64px;color:#718477;margin:auto}
+@container artboard (min-width:650.01px){.screen .category-menu button.category-child{padding-inline-start:26px;border-inline-start:2px solid #dce3da;font-size:11px;white-space:normal;text-align:start;gap:8px}}
+.category-children{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.category-children .secondary{min-height:40px;padding:8px 14px;font-size:12px;white-space:normal;text-align:center}
+
+.category-route-branch{margin-bottom:18px}.category-route-branch h2{margin:0 0 12px;font-size:20px;color:#244638}

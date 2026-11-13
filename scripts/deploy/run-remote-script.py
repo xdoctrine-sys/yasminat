@@ -4,12 +4,12 @@ No environment variables or credentials are printed. Raw logs stay in /private/t
 import base64, pathlib, shlex, subprocess, sys
 source=pathlib.Path(sys.argv[1]).resolve()
 name=source.name
-if name not in {'catalog-inventory.ts','seed-yasminat-preview.ts'}:raise SystemExit('Unsupported script')
+if name not in {'catalog-inventory.ts','seed-yasminat-preview.ts','add-home-fragrance-category.ts'}:raise SystemExit('Unsupported script')
 encoded=base64.b64encode(source.read_bytes()).decode('ascii')
 remote='/tmp/yasminat-'+name
 apply='--apply' in sys.argv[2:]
-if apply and name!='seed-yasminat-preview.ts':raise SystemExit('Apply is only valid for the preview seed')
-command='printf %s '+shlex.quote(encoded)+' | base64 -d > '+shlex.quote(remote)+' && cd /app/packages/api && '+('YASMINAT_PREVIEW_SEED_APPLY=1 ' if apply else '')+'XDG_CONFIG_HOME=/tmp/yasminat-config ./node_modules/.bin/medusa exec '+shlex.quote(remote)
+if apply and name not in {'seed-yasminat-preview.ts','add-home-fragrance-category.ts'}:raise SystemExit('Apply is not supported for this script')
+command='printf %s '+shlex.quote(encoded)+' | base64 -d > '+shlex.quote(remote)+' && cd /app/packages/api && '+(('YASMINAT_FRAGRANCE_APPLY=1 ' if name=='add-home-fragrance-category.ts' else 'YASMINAT_PREVIEW_SEED_APPLY=1 ') if apply else '')+'XDG_CONFIG_HOME=/tmp/yasminat-config ./node_modules/.bin/medusa exec '+shlex.quote(remote)
 args=['railway','ssh','--project','76943e20-4ade-4d90-b5db-adafc37b2cdd','--service','backend','--environment','production',command]
 run=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 log=pathlib.Path('/private/tmp/yasminat-remote-'+name+'.log');log.write_text(run.stdout)

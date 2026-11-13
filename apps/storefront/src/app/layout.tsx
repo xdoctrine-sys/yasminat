@@ -2,12 +2,7 @@ import {ApprovedFrame} from '@/components/yasminat/approved/Frame';
 import type { Metadata } from 'next';
 import {yasLanguage} from '@/components/yasminat/server';
 import {YasminatProvider} from '@/components/yasminat/Provider';
-import './yasminat.css';
-import './approved-design.css';
-import './approved-frame.css';
-import './approved-mobile-review.css';
-
-import './globals.css';
+import './storefront.css';
 
 import { Toaster } from '@medusajs/ui';
 import Head from 'next/head';

@@ -1,7 +1,8 @@
-// Scope the approved mobile review snapshot for the native storefront.
+// Scope approved review snapshots for the native storefront.
 const fs=require('fs');
 const postcss=require('../../apps/storefront/node_modules/postcss');
-const source='apps/storefront/src/components/yasminat/approved/mobile-review.css';
+for(const name of ['mobile-review','tablet-review','category-review']){
+const source=`apps/storefront/src/components/yasminat/approved/${name}.css`;
 const root=postcss.parse(fs.readFileSync(source,'utf8'));
 function split(s){let depth=0,start=0,out=[];for(let i=0;i<s.length;i++){if(s[i]==='('||s[i]==='[')depth++;if(s[i]===')'||s[i]===']')depth--;if(s[i]===','&&depth===0){out.push(s.slice(start,i));start=i+1;}}out.push(s.slice(start));return out;}
 root.walkRules(rule=>{
@@ -10,4 +11,5 @@ root.walkRules(rule=>{
  if(!selectors.length){rule.remove();return;}
  rule.selector=selectors.map(s=>s.startsWith('html[')?s.replace(/^(html\[[^\]]+\])\s*/,'$1 .yas-approved '):'.yas-approved '+s).join(',');
 });
-fs.writeFileSync('apps/storefront/src/app/approved-mobile-review.css','/* Generated from the approved mobile review; run scripts/design/port-mobile-review-css.cjs. */\n'+root.toString());
+fs.writeFileSync(`apps/storefront/src/app/approved-${name}.css`,`/* Generated from the approved ${name}; run scripts/design/port-mobile-review-css.cjs. */\n`+root.toString());
+}

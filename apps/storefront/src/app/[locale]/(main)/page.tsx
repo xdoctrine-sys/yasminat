@@ -1,3 +1,4 @@
+import {flattenCategoryTree} from '@/lib/helpers/category-tree';
 import {fetchHeroSlides} from '@/lib/data/hero-banners';
 import {listCategories} from '@/lib/data/categories';
 import {listProducts} from '@/lib/data/products';
@@ -108,5 +109,5 @@ export default async function Home({params}:{params:Promise<{locale:string}>}) {
   listProducts({countryCode:locale,queryParams:{limit:100,fields:'*categories,*variants.calculated_price,*variants.options,*options.values'}}),
   fetchHeroSlides(),
  ]);
- return <YasHome products={response.products} categories={parentCategories} locale={locale} banners={slots}/>;
+ return <YasHome products={response.products} categories={flattenCategoryTree(parentCategories)} locale={locale} banners={slots}/>;
 }

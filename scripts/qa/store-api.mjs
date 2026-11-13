@@ -6,7 +6,8 @@ const references=readDesign('products');
 const asset=path=>'/yasminat/'+path.replace(/^assets\//,'');
 if(process.env.YASMINAT_QA_FIXTURE!=='1')throw Error('Set YASMINAT_QA_FIXTURE=1 for the isolated local QA fixture');
 const price=(amount,original=amount)=>({calculated_amount:amount,calculated_amount_with_tax:amount,calculated_amount_without_tax:amount,original_amount:original,currency_code:'qar',calculated_price:{price_list_type:'sale'}});
-const categories=readDesign('categories').map((c,i)=>({id:'pcat_qa_'+c.id,name:c.name.ar,handle:c.id,description:'نباتات ومستلزمات مناسبة لهذا القسم.',parent_category_id:null,category_children:[],rank:i,metadata:{yasminat_category:c.id,name_en:c.name.en,thumbnail:asset(references.find(p=>p.id===c.visual).image)}}));
+const categories=readDesign('categories').map((c,i)=>({id:'pcat_qa_'+c.id,name:c.name.ar,handle:c.id,description:'نباتات ومستلزمات مناسبة لهذا القسم.',parent_category_id:c.parentId?'pcat_qa_'+c.parentId:null,category_children:[],rank:i,metadata:{yasminat_category:c.id,name_en:c.name.en,...(c.visual?{thumbnail:asset(references.find(p=>p.id===c.visual).image)}:{})}}));
+for(const c of categories)c.category_children=categories.filter(child=>child.parent_category_id===c.id);
 const sellers=readDesign('nurseries').map(c=>({id:'seller_qa_'+c.id,handle:'qa-'+c.id,name:c.name.ar,description:c.tag.ar,created_at:'2026-01-01T00:00:00Z',store_status:'ACTIVE',logo:asset(references.find(p=>p.id===c.image).image)}));
 const products=references.map((p,i)=>({id:'prod_qa_'+p.id,handle:p.id==='rose'?'monstera':p.id,title:p.name.ar,description:p.description.ar,thumbnail:asset(p.image),images:[{id:'img_'+i,url:asset(p.image)}],options:[],variants:[{id:'variant_qa_'+p.id,title:'Default',options:[],calculated_price:price(p.price,p.old||p.price),inventory_quantity:10,manage_inventory:true}],categories:categories.filter(c=>c.handle===p.category||p.tags.includes(c.handle)||c.handle==='plants'&&['indoor','outdoor','ornamental','artificial','flowering'].includes(p.category)||c.handle==='care'&&p.category==='nutrition'),created_at:'2026-01-01T00:00:00Z',metadata:{yasminat_preview_batch:'local-contract-only',yasminat_product:p.id,name_en:p.name.en,description_en:p.description.en}}));
 const sizes=['صغير','متوسط','كبير'],colors=['أبيض','رملي','فحمي'];
@@ -23,7 +24,7 @@ const server=http.createServer(async(req,res)=>{
  const send=(data,status=200)=>{res.statusCode=status;res.end(JSON.stringify(data));};
  if(method==='OPTIONS'){res.setHeader('access-control-allow-headers','content-type,x-publishable-api-key');res.setHeader('access-control-allow-methods','GET,POST,DELETE,OPTIONS');return send({});}
  try{
-  const body=method==='POST'?await read(req):{};requests.push({method,path,body});
+  const body=method==='POST'?await read(req):{};requests.push({method,path,query:u.search,body});
   if(path==='/qa/requests')return send({requests});
   if(path==='/store/regions')return send({regions:[region],count:1});
   if(path==='/store/regions/reg_qa')return send({region});

@@ -3,6 +3,7 @@ import { HttpTypes } from '@medusajs/types';
 import { sdk } from '@/lib/client';
 import { CACHE_TAGS, getGlobalCacheOptions } from './cache-tags';
 import {collectCategoryPages} from '../helpers/category-pages';
+import {visibleCategoryTree} from '../helpers/category-tree';
 
 interface CategoriesProps {
   query?: Record<string, unknown>;
@@ -31,31 +32,8 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
     } as never) as unknown as Promise<{ product_categories: HttpTypes.StoreProductCategory[];count?:number }>);
   const allCategories=await collectCategoryPages(loadPage,limit,query?.limit===undefined&&query?.offset===undefined).catch(()=>[] as HttpTypes.StoreProductCategory[]);
 
-  const byRank = (a: any, b: any) => (a.rank ?? 9999) - (b.rank ?? 9999);
-
-  const preview=allCategories.filter(cat=>cat.metadata?.yasminat_preview_batch);
-  const visibleCategories=preview.length?preview:allCategories;
-  const parentCategories = visibleCategories
-    .filter(cat => !cat.parent_category_id && cat.handle !== 'test-categorie-yasminat')
-    .sort(byRank);
-
-  const mainCategories = parentCategories
-    .flatMap(parent => [...(parent.category_children || [])].sort(byRank));
-
-  const mainCategoriesWithChildren = mainCategories.map(mainCat => {
-    const children = allCategories
-      .filter(cat => cat.parent_category_id === mainCat.id)
-      .sort(byRank);
-
-    if (children.length > 0) {
-      return {
-        ...mainCat,
-        category_children: children
-      };
-    }
-
-    return mainCat;
-  });
+  const parentCategories=visibleCategoryTree(allCategories).filter(cat=>cat.handle!=='test-categorie-yasminat');
+  const mainCategoriesWithChildren=parentCategories.flatMap(parent=>parent.category_children||[]);
 
   return {
     parentCategories,
@@ -66,7 +44,7 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
 export const getCategoryByHandle = async (categoryHandle: string) => {
   return (sdk.store.productCategories
     .query({
-      fields: 'id,name,handle,parent_category_id,*category_children',
+      fields: 'id,name,handle,metadata,description,rank,parent_category_id,*category_children',
       handle: categoryHandle,
       include_descendants_tree: true,
       fetchOptions: {

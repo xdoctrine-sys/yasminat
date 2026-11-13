@@ -1,6 +1,8 @@
+import {CategoryBranch} from '@/components/yasminat/approved/CategoryBranch';
+import {flattenCategoryTree} from '@/lib/helpers/category-tree';
 import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
-import { getCategoryByHandle, collectCategorySubtreeIds } from "@/lib/data/categories"
+import { getCategoryByHandle, collectCategorySubtreeIds, listCategories } from "@/lib/data/categories"
 import { Suspense } from "react"
 
 import type { Metadata } from "next"
@@ -90,6 +92,8 @@ async function Category({
 
   // Include the whole category subtree so a parent department page lists every
   // product in its sub-categories, not just products attached to the parent.
+  const {parentCategories}=await listCategories();
+  const parent=flattenCategoryTree(parentCategories).find(c=>c.id===category.parent_category_id);
   const categoryIds = collectCategorySubtreeIds(category)
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -152,6 +156,7 @@ async function Category({
         }}
       />
       <ApprovedIntro type="listing" name={category.name}/>
+      <CategoryBranch category={category} parent={parent}/>
 
 
 

@@ -27,6 +27,15 @@
     "visual": "garden-decor"
   },
   {
+    "id": "home-fragrance-diffusers",
+    "parentId": "decor",
+    "name": {
+      "ar": "أجهزة تعطير المنزل",
+      "en": "Home Fragrance Diffusers"
+    },
+    "icon": "home"
+  },
+  {
     "id": "pots",
     "name": {
       "ar": "الأحواض والأصص",
