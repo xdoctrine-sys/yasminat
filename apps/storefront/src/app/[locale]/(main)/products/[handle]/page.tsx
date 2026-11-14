@@ -1,3 +1,4 @@
+import {headers} from 'next/headers'
 import { ProductDetailsPage } from "@/components/sections"
 import { listProducts } from "@/lib/data/products"
 import { generateProductMetadata } from "@/lib/helpers/seo"
@@ -25,9 +26,12 @@ export default async function ProductPage({
 }) {
   const { handle, locale } = await params
 
+  const requestHeaders=await headers();
+  const baseUrl=process.env.NEXT_PUBLIC_BASE_URL||`${requestHeaders.get('x-forwarded-proto')||'https'}://${requestHeaders.get('host')}`;
+
   return (
     <main className="screen-content container">
-      <ProductDetailsPage handle={handle} locale={locale} />
+      <ProductDetailsPage handle={handle} locale={locale} baseUrl={baseUrl} />
     </main>
   )
 }

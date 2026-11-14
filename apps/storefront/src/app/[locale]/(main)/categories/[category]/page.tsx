@@ -1,3 +1,7 @@
+import {CatalogBreadcrumb} from '@/components/yasminat/approved/CatalogBreadcrumb';
+import {homeCrumb,categoryTrail} from '@/lib/helpers/catalog-breadcrumbs';
+import {yasLanguage} from '@/components/yasminat/server';
+import {categoryName} from '@/lib/helpers/category-tree';
 import {CategoryBranch} from '@/components/yasminat/approved/CategoryBranch';
 import {flattenCategoryTree} from '@/lib/helpers/category-tree';
 import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
@@ -6,7 +10,6 @@ import { getCategoryByHandle, collectCategorySubtreeIds, listCategories } from "
 import { Suspense } from "react"
 
 import type { Metadata } from "next"
-import { Breadcrumbs } from "@/components/atoms"
 import { SearchProductsListing, ProductListing } from "@/components/sections"
 import { notFound } from "next/navigation"
 import isBot from "@/lib/helpers/isBot"
@@ -98,13 +101,6 @@ async function Category({
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
 
-  const breadcrumbsItems = [
-    {
-      path: categoryHandle,
-      label: category.name,
-    },
-  ]
-
   const headersList = await headers()
   const host = headersList.get("host")
   const protocol = headersList.get("x-forwarded-proto") || "https"
@@ -127,24 +123,6 @@ async function Category({
   return (
     <main className="screen-content container">
       <Script
-        id="ld-breadcrumbs-category"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: category.name,
-                item: `${baseUrl}/${locale}/categories/${categoryHandle}`,
-              },
-            ],
-          }),
-        }}
-      />
-      <Script
         id="ld-itemlist-category"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -155,7 +133,8 @@ async function Category({
           }),
         }}
       />
-      <ApprovedIntro type="listing" name={category.name}/>
+      <CatalogBreadcrumb items={[homeCrumb,...categoryTrail(category,flattenCategoryTree(parentCategories))]} baseUrl={baseUrl} locale={locale}/>
+      <ApprovedIntro type="listing" name={categoryName(category,await yasLanguage())} hideBreadcrumb/>
       <CategoryBranch category={category} parent={parent}/>
 
 

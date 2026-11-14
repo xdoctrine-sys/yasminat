@@ -1,4 +1,5 @@
 "use client"
+import {DeliveryEstimate} from '@/components/yasminat/DeliveryEstimate';
 import {useYasminat} from '@/components/yasminat/Provider';
 import {YasIcon} from '@/components/yasminat/Icon';
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink';
@@ -73,7 +74,7 @@ export const ProductDetailsHeader = ({product,locale,user,offers=[],seller}:{pro
  };
  return <div data-testid="product-details-header">
   {seller?.handle&&<LocalizedClientLink href={`/sellers/${seller.handle}`} className="detail-store"><YasIcon name="store" className="sm"/> {seller.name}</LocalizedClientLink>}
-  <div className="detail-title-price"><h2 data-testid="product-title">{product.title}</h2><div className="price">{hasOffer?<><strong data-testid="product-price-current">{money(amount!)}</strong>{typeof original==='number'&&original>amount!&&<del>{money(original)}</del>}</>:<p>{tr('غير متوفر حاليًا','Currently unavailable')}</p>}</div></div>
+  <div className="detail-title-price"><div className="detail-title-label"><h2 data-testid="product-title">{product.title}</h2><DeliveryEstimate metadata={winnerOffer?.metadata||product.metadata}/></div><div className="price">{hasOffer?<><strong data-testid="product-price-current">{money(amount!)}</strong>{typeof original==='number'&&original>amount!&&<del>{money(original)}</del>}</>:<p>{tr('غير متوفر حاليًا','Currently unavailable')}</p>}</div></div>
   {product.description&&<p className="description">{product.description}</p>}
   <ProductVariants product={product} selectedVariant={selectedVariant}/>
   <div className="detail-note"><YasIcon name="truck"/>{tr('توصيل داخل قطر · التفاصيل عند إتمام الطلب','Qatar delivery · details at checkout')}</div>

@@ -34,8 +34,7 @@ export function YasHeader({categories=[]}: {categories?: Category[]}) {
  const screen=yasminatScreen(path,String(params.locale));
  if([4,10,11].includes(screen)){
   const canClose=screen!==4;
-  if(!canGoBack&&!canClose)return null;
-  if(!canGoBack)return <LocalizedClientLink className="history-back standalone-history-back" href="/" replace aria-label={tr('إغلاق','Close')}><YasIcon name="x"/></LocalizedClientLink>;
+  if(!canGoBack)return <LocalizedClientLink className="history-back standalone-history-back" href="/" replace aria-label={canClose?tr('إغلاق','Close'):tr('الرئيسية','Home')}><YasIcon name={canClose?'x':'home'}/></LocalizedClientLink>;
   return <button type="button" className="history-back standalone-history-back" aria-label={tr('الرجوع','Go back')} onClick={()=>router.back()}><YasIcon name="arrow"/></button>;
  }
  if([1,8].includes(screen))return null;
@@ -53,7 +52,7 @@ export function YasHeader({categories=[]}: {categories?: Category[]}) {
  const floating=!!copy[screen];
  const [title,subtitle]=copy[screen]||['',''];
  return <header className={`phone-header${floating?' floating-page-header':''}`}>
- {floating&&canGoBack&&<button type="button" className="history-back" aria-label={tr('الرجوع','Go back')} onClick={()=>router.back()}><YasIcon name="arrow"/></button>}
+ {floating&&(screen===5?<button type="button" className="history-back cart-close" aria-label={tr('إغلاق السلة','Close bag')} onClick={()=>canGoBack?router.back():router.replace(`/${params.locale}`)}><YasIcon name="x"/></button>:canGoBack&&<button type="button" className="history-back" aria-label={tr('الرجوع','Go back')} onClick={()=>router.back()}><YasIcon name="arrow"/></button>)}
  <LocalizedClientLink className="phone-brand" href="/">{tr('ياسمينات','YASMINAT')}</LocalizedClientLink>{floating&&<><h2 className="floating-page-title">{title}</h2>{subtitle&&<p className="floating-page-subtitle">{subtitle}</p>}</>}<ApprovedNotifications/></header>;
 }
 

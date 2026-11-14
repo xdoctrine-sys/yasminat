@@ -1,9 +1,10 @@
+import {CatalogBreadcrumb} from '@/components/yasminat/approved/CatalogBreadcrumb';
+import {homeCrumb,productsCrumb} from '@/lib/helpers/catalog-breadcrumbs';
 import {listCategories,collectCategorySubtreeIds} from '@/lib/data/categories';
 import {ApprovedIntro} from '@/components/yasminat/approved/Intro';
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { Suspense } from "react"
 
-import { Breadcrumbs } from "@/components/atoms"
 import { SearchProductsListing, ProductListing } from "@/components/sections"
 import isBot from "@/lib/helpers/isBot"
 import { headers } from "next/headers"
@@ -78,13 +79,6 @@ async function AllCategories({
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
 
-  const breadcrumbsItems = [
-    {
-      path: "/",
-      label: "All Products",
-    },
-  ]
-
   const headersList = await headers()
   const host = headersList.get("host")
   const protocol = headersList.get("x-forwarded-proto") || "https"
@@ -106,24 +100,6 @@ async function AllCategories({
   return (
     <main className="screen-content container">
       <Script
-        id="ld-breadcrumbs-categories"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "All Products",
-                item: `${baseUrl}/${locale}/categories`,
-              },
-            ],
-          }),
-        }}
-      />
-      <Script
         id="ld-itemlist-categories"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -134,7 +110,8 @@ async function AllCategories({
           }),
         }}
       />
-      <ApprovedIntro type="listing"/>
+      <CatalogBreadcrumb items={[homeCrumb,productsCrumb]} baseUrl={baseUrl} locale={locale}/>
+      <ApprovedIntro type="listing" hideBreadcrumb/>
 
 
 
