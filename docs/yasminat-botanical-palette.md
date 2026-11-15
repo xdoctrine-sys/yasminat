@@ -29,3 +29,9 @@ dashboards and data are untouched. Future integration between deployment
 branches should be reviewed deliberately.
 Detailed build, responsive and public verification evidence is retained in the
 workspace release report outside this repository.
+
+## Approved mascot release
+
+The frontend branch also includes the approved Yasminat introduction card, original transparent artwork, AR/EN v3 narration and concept videos. These are native React components, not a prototype iframe. Audio loads only after a user click. The transcript and video explicitly describe a service in development; no AI, photo upload, account or paid provider integration is enabled. Reduced motion shows the static drawing.
+
+This branch is the storefront release source only. Its root `railway.json` builds and starts only `apps/storefront` and has an empty pre-deploy command list. Do not apply this frontend manifest to the backend source branch (`deploy`). The backend service and data remain on that branch unchanged. The legacy config is retained for this existing Railway service; a broader IaC migration is outside this UI release.

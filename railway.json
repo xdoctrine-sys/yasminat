@@ -5,20 +5,20 @@
     "rootDirectory": "./",
     "watchPatterns": [
       "**",
+      "!apps/storefront/node_modules/**",
+      "!apps/storefront/.next/**",
       "!**/node_modules/**",
       "!**/.git/**"
     ],
-    "buildCommand": "bun install --no-save && bun run build"
+    "buildCommand": "bun install --no-save && bun --filter=@mercurjs/storefront run build && mkdir -p apps/storefront/.next/standalone/apps/storefront/public apps/storefront/.next/standalone/apps/storefront/.next/static && cp -a apps/storefront/public/. apps/storefront/.next/standalone/apps/storefront/public/ && cp -a apps/storefront/.next/static/. apps/storefront/.next/standalone/apps/storefront/.next/static/"
   },
   "deploy": {
-    "preDeployCommand": [
-      "cd packages/api && npx medusa db:migrate --no-interactive"
-    ],
-    "startCommand": "cd packages/api/.medusa/server && npx medusa start --host 0.0.0.0 --port ${PORT}",
-    "healthcheckPath": "/health",
-    "healthcheckTimeout": 300,
+    "startCommand": "cd apps/storefront/.next/standalone && PORT=${PORT} HOSTNAME=0.0.0.0 node apps/storefront/server.js",
+    "healthcheckPath": "/qa",
+    "healthcheckTimeout": 180,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 5,
+    "preDeployCommand": [],
     "overlapSeconds": 60,
     "drainingSeconds": 30
   }

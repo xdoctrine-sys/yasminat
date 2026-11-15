@@ -1,0 +1,74 @@
+/* Local mascot review: supplied assets retain their colours and aspect ratios. */
+.yasminat-site .yas-approved .mascot-welcome{display:grid;grid-template-columns:70px minmax(0,1fr) 36px;align-items:center;gap:10px;margin:0 12px 8px;padding:6px 10px;border:1px solid #e1e5dc;border-radius:14px;background:#f4f5ee;color:#244638;min-width:0}
+.yasminat-site .yas-approved .mascot-art{display:flex;align-items:center;justify-content:center;width:70px;height:82px;flex-shrink:0}
+.yasminat-site .yas-approved .mascot-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;filter:none;transform:none}
+.yasminat-site .yas-approved .mascot-art .mascot-still{width:58px;height:58px}
+.yasminat-site .yas-approved .mascot-art img[hidden]{display:none!important}
+.yasminat-site .yas-approved .mascot-copy{min-width:0}
+.yasminat-site .yas-approved .screen .mascot-copy h2{font-size:15px!important;line-height:1.6!important;letter-spacing:0!important;margin:0!important;color:#244638!important}
+.yasminat-site .yas-approved .screen .mascot-copy p{font-size:11px!important;line-height:1.8!important;margin:2px 0 0!important;color:#718477!important}
+.yasminat-site .yas-approved .mascot-play{display:flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:1px solid #dce3d7;border-radius:50%;background:#fbf9f5;color:#45654f;box-shadow:none;flex-shrink:0}
+.yasminat-site .yas-approved .mascot-play .icon{width:15px;height:15px}
+.yasminat-site .yas-approved .mascot-play:focus-visible{outline:2px solid #718477;outline-offset:3px}
+.yasminat-site .yas-approved .mascot-play:disabled{opacity:.45;cursor:default}
+.yasminat-site .yas-approved .screen .empty>.mascot-empty{display:block;width:64px;height:64px;margin:0 auto 14px;object-fit:contain;filter:none;transform:none}
+@container artboard (min-width:650px){
+ .yasminat-site .yas-approved .mascot-welcome{grid-template-columns:84px minmax(0,1fr) 38px;gap:16px;margin-inline:24px;padding:6px 16px;margin-bottom:12px}
+ .yasminat-site .yas-approved .mascot-art{width:84px;height:98px}.yasminat-site .yas-approved .mascot-art .mascot-still{width:68px;height:68px}
+ .yasminat-site .yas-approved .screen .mascot-copy h2{font-size:18px!important}.yasminat-site .yas-approved .screen .mascot-copy p{font-size:12px!important}
+}
+@container artboard (min-width:1024px){.yasminat-site .yas-approved .mascot-welcome{margin-inline:12px}}
+@media(prefers-reduced-motion:reduce){
+ .yasminat-site .yas-approved .mascot-art .mascot-motion{display:none!important}
+ .yasminat-site .yas-approved .mascot-art .mascot-still{display:block!important}
+}
+
+/* Narration remains available when visual motion is reduced. */
+.yasminat-site .yas-approved .mascot-transcript{margin-top:4px;font-size:10px;line-height:1.7;color:#59765e}
+.yasminat-site .yas-approved .mascot-transcript summary{cursor:pointer;text-underline-offset:3px;width:fit-content}
+.yasminat-site .yas-approved .mascot-transcript summary:hover{text-decoration:underline}
+.yasminat-site .yas-approved .mascot-transcript summary:focus-visible{outline:2px solid #718477;outline-offset:2px;border-radius:3px}
+.yasminat-site .yas-approved .screen .mascot-copy .mascot-transcript p{margin-block:8px!important;font-size:11px!important;line-height:1.9!important}
+.yasminat-site .yas-approved .screen .mascot-copy .mascot-audio-status:empty{display:none}
+.yasminat-site .yas-approved .screen .mascot-copy .mascot-audio-status{color:#96513e!important}
+.yasminat-site .yas-approved .mascot-welcome:has(.mascot-transcript[open]){align-items:start}
+.yasminat-site .yas-approved .mascot-welcome:has(.mascot-transcript[open])>.mascot-play{margin-top:8px}
+
+/* Jump, separate, then reassemble the original robot drawing in 3.6 seconds. */
+.yasminat-site .yas-approved .mascot-art{position:relative;padding:0;border:0;background:transparent;overflow:visible;cursor:pointer}
+.yasminat-site .yas-approved .mascot-art:focus-visible{outline:2px solid #718477;outline-offset:2px;border-radius:10px}
+.yasminat-site .yas-approved .mascot-art:disabled{cursor:default}
+.yasminat-site .yas-approved .mascot-burst{display:block;position:relative;width:56px;height:70px;flex-shrink:0;animation:mascotJumpAssemble 3.6s ease-in-out both;pointer-events:none}
+.yasminat-site .yas-approved .mascot-burst-whole,.yasminat-site .yas-approved .mascot-burst-piece{position:absolute;inset:0;display:block;background-image:var(--mascot-frame);background-size:100% 100%;background-repeat:no-repeat;transform-origin:50% 55%;will-change:transform,opacity}
+.yasminat-site .yas-approved .mascot-burst-whole{animation:mascotWholeVisibility 3.6s linear both}
+.yasminat-site .yas-approved .mascot-burst-piece{animation:mascotPartsAssemble 3.6s cubic-bezier(.4,0,.2,1) both}
+@keyframes mascotJumpAssemble{0%,100%{transform:translateY(0)}14%{transform:translateY(-5px)}26%,51%{transform:translateY(-3px)}78%,87%{transform:translateY(0)}92%{transform:translateY(-2px)}}
+@keyframes mascotWholeVisibility{0%,24%{opacity:1}26%,73%{opacity:0}76%,100%{opacity:1}}
+@keyframes mascotPartsAssemble{0%,24%{opacity:0;transform:translate(0,0) rotate(0)}26%{opacity:1;transform:translate(0,0) rotate(0)}40%,51%{opacity:1;transform:translate(var(--piece-x),var(--piece-y)) rotate(var(--piece-turn))}74%{opacity:1;transform:translate(0,0) rotate(0)}78%,100%{opacity:0;transform:translate(0,0) rotate(0)}}
+@container artboard (min-width:650px){.yasminat-site .yas-approved .mascot-burst{width:68px;height:85px}}
+@media(prefers-reduced-motion:reduce){.yasminat-site .yas-approved .mascot-burst{display:none!important;animation:none!important}.yasminat-site .yas-approved .mascot-burst *{animation:none!important}}
+
+/* A separate large player keeps the explainer text readable. */
+.yasminat-site .yas-approved .mascot-video-open{display:inline-flex;align-items:center;gap:5px;padding:3px 0;margin-top:2px;border:0;background:transparent;color:#244638;font:600 11px/1.7 Cairo,Arial;cursor:pointer;text-align:start}
+.yasminat-site .yas-approved .mascot-video-open .icon{width:13px;height:13px}
+.yasminat-site .yas-approved .mascot-video-open:focus-visible{outline:2px solid #718477;outline-offset:3px}
+.yasminat-site .yas-approved .mascot-presentation{width:min(1100px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:18px;border:1px solid #dce3d7;border-radius:18px;background:#fbf9f5;color:#244638;font-family:Cairo,Arial;overflow:auto;overscroll-behavior:contain}
+.yasminat-site .yas-approved .mascot-presentation:not([open]){display:none!important}
+.yasminat-site .yas-approved .mascot-presentation::backdrop{background:#15291fe0}
+.yasminat-site .yas-approved .mascot-presentation-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.yasminat-site .yas-approved .screen .mascot-presentation-header h2{font-size:20px!important;line-height:1.5!important;margin:0!important;color:#244638!important}
+.yasminat-site .yas-approved .screen .mascot-presentation-header p{font-size:12px!important;line-height:1.7!important;margin:4px 0 0!important;color:#59765e!important}
+.yasminat-site .yas-approved .mascot-presentation-close{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex-shrink:0;padding:0;border:1px solid #dce3d7;border-radius:50%;background:#fff;color:#244638}
+.yasminat-site .yas-approved .mascot-presentation-video{display:block;width:100%;max-height:calc(100dvh - 190px);aspect-ratio:16/9;object-fit:contain;background:#fbf9f5;border-radius:10px}
+.yasminat-site .yas-approved .mascot-presentation[data-format=phone] .mascot-presentation-video{aspect-ratio:3/4}
+.yasminat-site .yas-approved .mascot-presentation-footer{display:flex;align-items:center;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:10px;font-size:11px;line-height:1.7;color:#59765e}
+.yasminat-site .yas-approved .mascot-presentation-status:empty{display:none}
+.yasminat-site .yas-approved .mascot-presentation-status{flex-basis:100%;margin:0}
+.yasminat-site .yas-approved .mascot-presentation-fullscreen{padding:7px 13px;border:1px solid #dce3d7;border-radius:999px;background:#fff;color:#244638;font:inherit;min-height:36px}
+@media(max-width:649px){.yasminat-site .yas-approved .mascot-presentation{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;padding:12px}.yasminat-site .yas-approved .mascot-presentation-header h2{font-size:18px!important}.yasminat-site .yas-approved .mascot-presentation-video{max-height:calc(100dvh - 210px)}}
+
+/* Native botanical tokens, with the original artwork unchanged. */
+.yasminat-site .yas-approved .mascot-welcome{background:var(--yasminat-sage,#E7EFE5);white-space:normal}
+.yasminat-site .yas-approved .mascot-copy p,.yasminat-site .yas-approved .mascot-transcript,.yasminat-site .yas-approved .mascot-presentation-footer,.yasminat-site .yas-approved .screen .mascot-presentation-header p{color:#435648!important}
+.yasminat-site .yas-approved .mascot-play [hidden]{display:none!important}
+.yasminat-site .yas-approved .mascot-presentation{background:#FAF7F0}
