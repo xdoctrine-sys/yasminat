@@ -1,0 +1,77 @@
+/* Yasminat's approved botanical palette. Storefront only; no comparison UI. */
+body.yasminat-site {
+  --yasminat-cream: #FAF7F0;
+  --yasminat-green: #244638;
+  --yasminat-secondary: #435648;
+  --yasminat-sage: #E7EFE5;
+  --yasminat-sand: #F1ECE2;
+  --yasminat-terracotta: #C26D4A;
+  --yasminat-terracotta-soft: #F8ECE6;
+  --yasminat-terracotta-strong: #A64E2E;
+
+  /* Existing native Tailwind colour tokens, inherited by commerce forms. */
+  --bg-primary: 250, 247, 240;
+  --bg-secondary: 231, 239, 229;
+  --bg-action-primary: 36, 70, 56;
+  --bg-action-primary-hover: 36, 70, 56;
+  --bg-action-primary-pressed: 36, 70, 56;
+  --content-primary: 36, 70, 56;
+  --content-secondary: 67, 86, 72;
+  --content-action-primary: 36, 70, 56;
+  --content-action-on-primary: 255, 255, 255;
+  --page-surface: var(--yasminat-cream);
+  --page-gradient: var(--yasminat-cream);
+  --header-gradient: var(--yasminat-cream);
+  --tab-gradient: var(--yasminat-cream);
+  background: var(--yasminat-cream);
+}
+.yasminat-site .yas-approved {
+  --page-surface: var(--yasminat-cream);
+  --page-gradient: var(--yasminat-cream);
+  --header-gradient: var(--yasminat-cream);
+  --tab-gradient: var(--yasminat-cream);
+  --green: var(--yasminat-green);
+  --muted: var(--yasminat-secondary);
+  --ivory: var(--yasminat-cream);
+}
+.yasminat-site :is(.mobile-tabs,.page-intro,.listing-toolbar,.category-menu) {
+  background: var(--yasminat-cream) !important;
+}
+.yasminat-site :is(.promotion-surface,.category-banner,.vendor-banner,.yas-category-feature) {
+  background: var(--yasminat-sage) !important;
+}
+.yasminat-site .source-category>div,
+.yasminat-site .yas-category-circles>a>span {
+  background: var(--yasminat-sand);
+}
+.yasminat-site :is(.primary,.add-button,.promotion-cta,.filter.active,.category-menu button.active,.yas-primary,.yas-card-action) {
+  background: var(--yasminat-green) !important;
+  color: #fff !important;
+}
+.yasminat-site .yas-primary {border-color: var(--yasminat-green)}
+.yasminat-site :is(.promotion-copy p,.promotion-art small,.page-intro p,.floating-page-subtitle,.category-banner p,.vendor-banner p,.description,.detail-note,.fine-print,.muted,.product-delivery-estimate,.product-delivery-estimate small,.source-product-meta,.source-product-meta button,.price del,.summary-row,.seller-cart-note,.seller-cart-store small,.seller-order-reference,.vendor-about,.breadcrumb,.breadcrumb a,.breadcrumb [aria-current=page],.breadcrumb-separator,.yas-note,.yas-card-meta,.yas-card-price del,.yas-cart-info p,.yas-page-intro p,.yas-product-description) {
+  color: var(--yasminat-secondary) !important;
+}
+.yasminat-site .source-content-section :is(p,small) {color: var(--yasminat-secondary) !important}
+.yasminat-site :is(input,select,textarea) {color: var(--yasminat-secondary)}
+.yasminat-site input::placeholder {color: var(--yasminat-secondary) !important;opacity: 1}
+.yasminat-site .source-mobile-header>form input {
+  background: #fff !important;
+  box-shadow: inset 0 0 0 1px #d9d6cb;
+}
+.yasminat-site :is(.notification-badge,.tab-count,.desktop-cart-count,.yas-bag-count) {
+  background: var(--yasminat-terracotta-strong) !important;
+  color: #fff !important;
+}
+.yasminat-site .mobile-tabs .tab-count {outline-color: var(--yasminat-cream)}
+.yasminat-site .offers-reopen {
+  background: var(--yasminat-terracotta-soft) !important;
+  color: var(--yasminat-terracotta-strong) !important;
+  border-color: var(--yasminat-terracotta-strong) !important;
+}
+.yasminat-site .offers-reopen :is(.icon,.yas-icon) {color: var(--yasminat-terracotta)}
+.yasminat-site :is(.seller-cart-count,.profile-avatar) {background: var(--yasminat-sand)}
+.yasminat-site :is(.seller-cart-totals,.summary-card) {background: var(--yasminat-sage)}
+.yasminat-site :is(.yas-dialog,.app-panel,.filter-sheet) {background: var(--yasminat-cream)}
+.yasminat-site :is(.source-product-meta button[aria-pressed=true],.heart-button[aria-pressed=true]) {color: var(--yasminat-terracotta-strong) !important}
+.yasminat-site :is(.source-product-meta button[aria-pressed=true],.heart-button[aria-pressed=true]) :is(.icon,.yas-icon) {fill: #C26D4A26}
