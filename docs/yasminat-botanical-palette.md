@@ -35,3 +35,7 @@ workspace release report outside this repository.
 The frontend branch also includes the approved Yasminat introduction card, original transparent artwork, AR/EN v3 narration and concept videos. These are native React components, not a prototype iframe. Audio loads only after a user click. The transcript and video explicitly describe a service in development; no AI, photo upload, account or paid provider integration is enabled. Reduced motion shows the static drawing.
 
 This branch is the storefront release source only. Its root `railway.json` builds and starts only `apps/storefront` and has an empty pre-deploy command list. Do not apply this frontend manifest to the backend source branch (`deploy`). The backend service and data remain on that branch unchanged. The legacy config is retained for this existing Railway service; a broader IaC migration is outside this UI release.
+
+### Arabic introduction audio update
+
+The Arabic introduction now uses the user-approved ElevenLabs MP3 `yasminat-intro-ar-elevenlabs-v4.mp3` (37.407 seconds, mono 44.1kHz / 128kbps). Source SHA-256: `536b6e854b7bdeb86bf4dd901b04592d759bdc47eeab2570fc0eed558ea42596`. Local speech recognition of the actual MP3 detected Arabic and matched the existing introduction, including the service-in-development notice and closing invitation. The matching transcript and English v3 recording are unchanged. Playback and the video handoff use media events rather than a fixed introduction duration. No artwork, colours, videos, layout or backend changes are included in this audio update.

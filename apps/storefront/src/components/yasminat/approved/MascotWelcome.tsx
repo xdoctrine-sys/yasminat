@@ -35,7 +35,7 @@ function MascotCard({language}: {language: 'ar' | 'en'}) {
    data-replay-label={tr('إعادة التعريف الصوتي','Replay audio introduction')}>
    <span data-mascot-play-icon><YasIcon name="play"/></span><span data-mascot-pause-icon hidden><YasIcon name="pause"/></span>
   </button>
-  <audio className="mascot-narration" preload="none" data-src={`/assets/mascot/audio/yasminat-intro-${language}-neural-v3.mp3`} hidden/>
+  <audio className="mascot-narration" preload="none" data-src={language==='ar' ? '/assets/mascot/audio/yasminat-intro-ar-elevenlabs-v4.mp3' : '/assets/mascot/audio/yasminat-intro-en-neural-v3.mp3'} hidden/>
   <dialog className="mascot-presentation" aria-labelledby={`mascot-title-${language}`} data-play-hint={tr('اضغط تشغيل لمشاهدة عرض الفكرة.','Press play to watch the concept presentation.')}>
    <header className="mascot-presentation-header"><div><h2 id={`mascot-title-${language}`}>{tr('خلّنا نشوف الفكرة','See the idea in action')}</h2>
     <p>{tr('صورة المكان، الميزانية، المنتجات، والتنسيق المقترح.','Your space, your budget, products, and a suggested arrangement.')}</p></div>
