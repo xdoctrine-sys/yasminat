@@ -1,7 +1,7 @@
 // Native React lifecycle adapter for the approved Yasminat mascot controller.
 
 // Greeting motion is brief and silent. Narration requires an explicit user click.
-export function mountMascot(rootElement) {
+export function mountMascot(rootElement, {silentMotion=false}={}) {
  const abort=new AbortController();
  const on=(node,event,handler)=>node.addEventListener(event,handler,{signal:abort.signal});
  const preference=matchMedia('(prefers-reduced-motion: reduce)');
@@ -20,11 +20,11 @@ export function mountMascot(rootElement) {
   const motion=card.querySelector('.mascot-motion'),still=card.querySelector('.mascot-still');
   motion.onload=null;motion.onerror=null;motion.hidden=true;motion.removeAttribute('src');still.hidden=false;
   card.querySelector('.mascot-burst')?.remove();
-  card.querySelector('.mascot-art').disabled=preference.matches;
+  card.querySelector('.mascot-art').disabled=preference.matches||silentMotion;
   card.dataset.mascotState=preference.matches?'reduced-motion':'still';
  }
  function playMotion(){
-  if(!card||preference.matches||!visible||!contextAvailable()||motionLoading)return;
+  if(silentMotion||!card||preference.matches||!visible||!contextAvailable()||motionLoading)return;
   stopMotion();motionLoading=true;
   const root=card,motion=root.querySelector('.mascot-motion'),still=root.querySelector('.mascot-still');
   motion.onload=()=>{

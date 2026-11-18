@@ -1,0 +1,396 @@
+/* Approved design scenes in the native storefront. The decorative stage never intercepts input. */
+.mascot-dock {
+  position: absolute;
+  inset-inline-start: 10px;
+  bottom: 60px;
+  width: 118px;
+  height: 160px;
+  z-index: 18;
+  pointer-events: none;
+  isolation: isolate;
+  direction: inherit;
+}
+.mascot-dock .dock-stage {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+  width: 240px;
+  height: 180px;
+  max-width: none;
+  overflow: hidden;
+  contain: layout paint;
+  pointer-events: none;
+  visibility: hidden;
+  filter: drop-shadow(0 3px 3px #24463816);
+}
+.mascot-dock[data-art-ready="true"] .dock-stage {
+  visibility: visible;
+}
+.mascot-dock[dir="ltr"] .dock-stage {
+  transform: scaleX(-1);
+}
+.mascot-dock .dock-placeholder {
+  position: absolute;
+  inset-inline-start: 28px;
+  bottom: 50px;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.mascot-dock[data-art-ready="true"] .dock-placeholder {
+  display: none;
+}
+.mascot-dock .dock-launch {
+  position: absolute;
+  inset-inline-start: 18px;
+  bottom: 31px;
+  width: 88px;
+  height: 116px;
+  background: none;
+  border: 0;
+  border-radius: 28px;
+  padding: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  box-shadow: none;
+}
+.mascot-dock .dock-launch:focus-visible {
+  outline: 2px solid #244638;
+  outline-offset: 2px;
+  background: #e7efe526;
+}
+.mascot-dock .dock-quiet {
+  position: absolute;
+  inset-inline-start: 86px;
+  bottom: 100px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #d1d8cb;
+  background: #faf7f0;
+  color: #244638;
+  font:
+    600 14px/1 Cairo,
+    Arial;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.mascot-dock .dock-quiet:focus-visible {
+  outline: 2px solid #244638;
+  outline-offset: 2px;
+}
+.mascot-dock[data-protected="true"] {
+  width: 116px;
+  height: 120px;
+}
+.mascot-dock[data-protected="true"] .dock-stage {
+  width: 180px;
+  height: 135px;
+}
+.mascot-dock[data-protected="true"] .dock-launch {
+  inset-inline-start: 13px;
+  bottom: 24px;
+  width: 66px;
+  height: 87px;
+}
+.mascot-dock[data-protected="true"] .dock-quiet {
+  inset-inline-start: 0px;
+  bottom: 25px;
+}
+.mascot-dock-panel {
+  pointer-events: auto;
+  width: min(520px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 18px;
+  border: 1px solid #dce3d7;
+  border-radius: 18px;
+  background: #faf7f0;
+  color: #244638;
+  font:
+    14px/1.7 Cairo,
+    Arial;
+  box-shadow: 0 12px 40px #172c2230;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.mascot-dock-panel:not([open]) {
+  display: none !important;
+}
+.mascot-dock-panel::backdrop {
+  background: #1b342b77;
+}
+.dock-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.dock-panel-heading strong {
+  font-size: 17px;
+}
+.dock-panel-close {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #dce3d7;
+  border-radius: 50%;
+  color: #244638;
+  font: 28px/1 Arial;
+  cursor: pointer;
+}
+.mascot-dock-panel .mascot-welcome {
+  margin: 0;
+  grid-template-columns: 62px minmax(0, 1fr) 36px;
+  padding: 8px;
+  white-space: normal;
+  background: #e7efe5;
+}
+.mascot-dock-panel .mascot-copy h2 {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  color: #244638;
+}
+.mascot-dock-panel .mascot-copy p {
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 2px 0 0;
+  color: #435648;
+}
+.mascot-dock-panel .mascot-transcript p {
+  margin-block: 8px;
+  font-size: 12px;
+}
+.mascot-dock-panel .mascot-art {
+  width: 62px;
+  height: 72px;
+  opacity: 1;
+  cursor: default;
+}
+.mascot-dock-panel .mascot-video-open {
+  font-size: 12px;
+}
+.mascot-dock-panel .dock-disclosure {
+  font-size: 11px;
+  margin: 12px 0 0;
+  color: #435648;
+}
+.mascot-dock-panel .mascot-presentation {
+  pointer-events: auto;
+}
+.mascot-scene-review {
+  position: fixed;
+  top: 140px;
+  inset-inline-end: 12px;
+  z-index: 220;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  font:
+    12px/1.6 Cairo,
+    Arial;
+  color: #244638;
+  background: #faf7f0;
+  border: 1px solid #ccd5c8;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px #24463812;
+}
+.mascot-scene-review summary {
+  padding: 8px 12px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.scene-review-body {
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  padding: 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.scene-review-body > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.scene-review-body button {
+  min-height: 34px;
+  padding: 5px 9px;
+  border: 1px solid #c9d2c5;
+  border-radius: 8px;
+  background: white;
+  color: #244638;
+  font: inherit;
+  cursor: pointer;
+}
+.scene-review-body button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.scene-review-body label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scene-review-body select {
+  min-height: 36px;
+  border: 1px solid #c9d2c5;
+  border-radius: 6px;
+  background: white;
+  color: #244638;
+  font: inherit;
+  max-width: 100%;
+}
+.scene-review-body output {
+  min-height: 20px;
+  color: #435648;
+  font-size: 11px;
+}
+body.mobile-preview .mascot-scene-review {
+  top: 44px;
+  inset-inline-end: 8px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mascot-dock *,
+  .mascot-dock *::before,
+  .mascot-dock *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* The language chooses one stable corner; scrolling never changes it. */
+.mascot-dock[data-occluded="true"] {
+  visibility: hidden;
+}
+.mascot-dock[data-edge="right"] .dock-stage {
+  right: 0;
+  left: auto;
+  transform: none;
+}
+.mascot-dock[data-edge="left"] .dock-stage {
+  left: 0;
+  right: auto;
+  transform: scaleX(-1);
+}
+.mascot-dock[data-edge="right"] .dock-launch {
+  right: 18px;
+  left: auto;
+}
+.mascot-dock[data-edge="left"] .dock-launch {
+  left: 18px;
+  right: auto;
+}
+.mascot-dock[data-edge="right"] .dock-quiet {
+  right: 86px;
+  left: auto;
+}
+.mascot-dock[data-edge="left"] .dock-quiet {
+  left: 86px;
+  right: auto;
+}
+.mascot-dock[data-protected="true"][data-edge="right"] .dock-launch {
+  right: 13px;
+  left: auto;
+}
+.mascot-dock[data-protected="true"][data-edge="left"] .dock-launch {
+  left: 13px;
+  right: auto;
+}
+.mascot-dock[data-protected="true"][data-edge="right"] .dock-quiet {
+  right: 86px;
+  left: auto;
+}
+.mascot-dock[data-protected="true"][data-edge="left"] .dock-quiet {
+  left: 86px;
+  right: auto;
+}
+
+.mascot-dock .dock-launch {
+  clip-path: polygon(
+    25% 0,
+    80% 0,
+    100% 45%,
+    100% 72%,
+    72% 82%,
+    66% 100%,
+    35% 100%,
+    28% 81%,
+    8% 78%,
+    0 35%
+  );
+}
+.mascot-dock[data-edge="right"] .dock-quiet {
+  right: 86px;
+  left: auto;
+  bottom: 100px;
+}
+.mascot-dock[data-edge="left"] .dock-quiet {
+  left: 86px;
+  right: auto;
+  bottom: 100px;
+}
+.mascot-dock[data-protected="true"] .dock-quiet {
+  bottom: 80px;
+}
+/* The painted character is the mouse target. Empty parts of the dock pass through. */
+.mascot-dock[data-art-ready="true"] .dock-launch {
+  pointer-events: none;
+  clip-path: none;
+}
+.mascot-dock:has(.dock-launch:focus-visible) [data-dock-hit] {
+  stroke: #244638;
+  stroke-width: 5;
+  stroke-dasharray: 8 7;
+}
+.mascot-dock .dock-stage {
+  width: min(240px, calc(100cqw - 24px));
+  height: auto;
+  aspect-ratio: 4/3;
+}
+.mascot-dock[data-protected="true"] .dock-stage {
+  width: min(180px, calc(100cqw - 24px));
+  height: auto;
+}
+[data-mascot-welcome] .mascot-art:disabled {
+  opacity: 1;
+}
+/* Fixed artboard anchor: scrolling only changes hit access, never side or height. */
+.mascot-dock[data-scrolling="true"] [data-dock-hit],
+.mascot-dock[data-scrolling="true"] .dock-quiet,
+.mascot-dock[data-pass-through="true"] [data-dock-hit],
+.mascot-dock[data-pass-through="true"] .dock-quiet {
+  pointer-events: none !important;
+}
+.mascot-dock[data-protected="true"][data-pass-through="true"] .dock-stage,
+.mascot-dock[data-protected="true"][data-pass-through="true"] .dock-quiet {
+  opacity: 0.3;
+}
+
+/* Native card retains the same scoped styles inside the dock dialog. */
+.yasminat-site .yas-approved .mascot-dock-panel .mascot-welcome {
+  margin: 0;
+  grid-template-columns: 62px minmax(0, 1fr) 36px;
+  padding: 8px;
+}
+.yasminat-site .yas-approved .mascot-dock-panel .mascot-art {
+  width: 62px;
+  height: 72px;
+}
+.yasminat-site .yas-approved .mascot-dock-panel .mascot-copy h2 {
+  font-size: 16px;
+  margin: 0;
+  color: #244638;
+}
+.yasminat-site .yas-approved .mascot-dock-panel .mascot-copy p {
+  font-size: 11px;
+  margin: 2px 0 0;
+  color: #435648;
+}

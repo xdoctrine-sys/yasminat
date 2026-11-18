@@ -1,16 +1,16 @@
 "use client";
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useId} from 'react';
 import {useYasminat} from '../Provider';
 import {YasIcon} from '../Icon';
 import {mountMascot} from './mascot-controller';
 import narration from './mascotNarration.json';
 
 /** Informational preview only: this card does not submit photos, chats or orders. */
-function MascotCard({language}: {language: 'ar' | 'en'}) {
- const root=useRef<HTMLElement>(null);
+export function MascotCard({language}: {language: 'ar' | 'en'}) {
+ const root=useRef<HTMLElement>(null),titleId=useId();
  const {tr}=useYasminat();
- useEffect(()=>root.current ? mountMascot(root.current) : undefined, []);
+ useEffect(()=>root.current ? mountMascot(root.current,{silentMotion:true}) : undefined, []);
  return <section ref={root} className="mascot-welcome" data-mascot-welcome data-mascot-state="still" data-audio-state="idle"
    data-audio-error={tr('تعذّر تشغيل الصوت. اضغط لإعادة المحاولة.','Audio could not play. Press play to try again.')}
    aria-label={tr('مساعد ياسمينات — معاينة تعريفية','Yasminat assistant — introduction preview')}>
@@ -36,8 +36,8 @@ function MascotCard({language}: {language: 'ar' | 'en'}) {
    <span data-mascot-play-icon><YasIcon name="play"/></span><span data-mascot-pause-icon hidden><YasIcon name="pause"/></span>
   </button>
   <audio className="mascot-narration" preload="none" data-src={language==='ar' ? '/assets/mascot/audio/yasminat-intro-ar-elevenlabs-v4.mp3' : '/assets/mascot/audio/yasminat-intro-en-neural-v3.mp3'} hidden/>
-  <dialog className="mascot-presentation" aria-labelledby={`mascot-title-${language}`} data-play-hint={tr('اضغط تشغيل لمشاهدة عرض الفكرة.','Press play to watch the concept presentation.')}>
-   <header className="mascot-presentation-header"><div><h2 id={`mascot-title-${language}`}>{tr('خلّنا نشوف الفكرة','See the idea in action')}</h2>
+  <dialog className="mascot-presentation" aria-labelledby={titleId} data-play-hint={tr('اضغط تشغيل لمشاهدة عرض الفكرة.','Press play to watch the concept presentation.')}>
+   <header className="mascot-presentation-header"><div><h2 id={titleId}>{tr('خلّنا نشوف الفكرة','See the idea in action')}</h2>
     <p>{tr('صورة المكان، الميزانية، المنتجات، والتنسيق المقترح.','Your space, your budget, products, and a suggested arrangement.')}</p></div>
     <button type="button" className="mascot-presentation-close" aria-label={tr('إغلاق الفيديو','Close video')}><YasIcon name="x"/></button>
    </header>
