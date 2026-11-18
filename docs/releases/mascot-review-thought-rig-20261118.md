@@ -1,0 +1,13 @@
+# Yasminat mascot production control and arm correction
+
+Base: 6ad74c7a70c00860e5e8bdd14c768864e00b0924. Storefront-only correction; backend, domains, commerce, auth, provider behavior and all audio/video/transcripts/assets are unchanged.
+
+- Native review mode requires build-time NODE_ENV === development and the review query. Production compiles the gate false: mascotReview=1 cannot render developer controls or disable normal autoplay. The separate existing design prototype retains its review tools.
+- The real pause/resume button is three empty SVG thought circles with a 44×48px target, keyboard focus, localized action names and aria-pressed state. Paused styling uses a stronger outline and soft fill, with no play/pause glyph. Each scene registers its bubble transforms/opacity in the same director's WAAPI tracks; there is no independent perpetual bubble timer. Quiet, hidden, panel and reduced-motion locks apply to the bubbles and robot together.
+- Thought-button hit testing is independent from the larger decorative character silhouette. It remains usable over product imagery while yielding to purchase/form controls; scrolling still disables interception. No shop behavior changed.
+- Both arms use rigid shoulder/elbow transforms of the original raster, with explicit view-box coordinate systems and complete pivot/rig reset between scenes. Removed the whole-arm 145/210-degree rotations and mixed transform sequences. Camera/gift follow the right-hand forward-kinematics grip; the watering can follows the left hand. All sampled joint angles stay below 180 degrees; transforms contain no nonuniform arm scaling.
+- Right-only camera retrieval, left-only watering, combined holding and jump → camera → gardening → gift transitions are reviewed in motion, including pause/resume and static reset. Camera reach/hold/put-away and prop cleanup retain the approved scene concepts. No character asset was redrawn or recoloured.
+
+Validation: production build/type check; AR/EN at 390/1280 with plain and query URLs; no developer DOM/manual selectors, observed normal autoplay, three-circle localized control, no automatic media, no WhatsApp placeholder. Design recordings cover complete scene phases and sampled rigid matrices/grip alignment; production-mode pointer pause and reduced-motion checks also pass. Public verification, final identity and screenshots/animated evidence are stored in the workspace docs/integration-qa/mascot-review-gate-release directory.
+
+Limits: browser viewport checks, not a physical handset; screenshot-sampled motion evidence is not an FPS benchmark. Restore 6ad74c7 and deployment 1f67425c-e3a0-49bc-867f-7ee0a8bb5997 if recovery is required. The frontend source remains pinned to the accepted final commit.

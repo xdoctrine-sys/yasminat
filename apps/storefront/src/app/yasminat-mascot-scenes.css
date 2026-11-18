@@ -366,11 +366,12 @@ body.mobile-preview .mascot-scene-review {
 .mascot-dock[data-scrolling="true"] [data-dock-hit],
 .mascot-dock[data-scrolling="true"] .dock-quiet,
 .mascot-dock[data-pass-through="true"] [data-dock-hit],
-.mascot-dock[data-pass-through="true"] .dock-quiet {
+.mascot-dock[data-quiet-pass-through="true"] .dock-quiet {
   pointer-events: none !important;
 }
 .mascot-dock[data-protected="true"][data-pass-through="true"] .dock-stage,
-.mascot-dock[data-protected="true"][data-pass-through="true"] .dock-quiet {
+.mascot-dock[data-protected="true"][data-quiet-pass-through="true"]
+  .dock-quiet {
   opacity: 0.3;
 }
 
@@ -393,4 +394,43 @@ body.mobile-preview .mascot-scene-review {
   font-size: 11px;
   margin: 2px 0 0;
   color: #435648;
+}
+
+/* Empty thought bubbles are the real pause/resume control, not developer UI. */
+.mascot-dock .dock-quiet {
+  width: 44px;
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  touch-action: manipulation;
+}
+.mascot-dock .dock-quiet-thought {
+  display: block;
+  width: 44px;
+  height: 48px;
+  overflow: visible;
+  pointer-events: none;
+}
+.mascot-dock .dock-quiet-thought circle {
+  fill: #faf7f0;
+  stroke: #435648;
+  stroke-width: 1.7;
+}
+.mascot-dock .dock-quiet-thought [data-quiet-bubbles] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mascot-dock .dock-quiet[aria-pressed="true"] .thought-main {
+  fill: #e7efe5;
+  stroke: #244638;
+  stroke-width: 2.8;
+}
+.mascot-dock .dock-quiet:hover .thought-main {
+  fill: #e7efe5;
+}
+.mascot-dock[data-edge="right"] .dock-quiet-thought {
+  transform: scaleX(-1);
 }
