@@ -13,6 +13,8 @@ Based on c60e040ad3900696cc08c4d59283fd1a14d199f6. Native Next.js integration of
 
 The latest palette evaluation was advice only and is excluded. Existing palette and layouts are retained. No new AI/photo-processing service is enabled.
 
+- Latest approved correction: removed the standalone, unconfigured WhatsApp preview launcher and its unused native dialog/ref/handlers. Legitimate product/store/contact links and destinations are unchanged. The prototype removes the same placeholder.
+
 ## Preserved content
 
 Arabic ElevenLabs v4, English neural v3, both transcripts, four presentation videos, original mascot artwork and logos are byte-identical to the base release. No automatic audio. Explicit play/pause/resume and narration-ended-to-video handoff retained.
